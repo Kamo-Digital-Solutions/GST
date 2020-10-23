@@ -1,0 +1,69 @@
+
+.bg_dark_blue {
+	background-color: #064165;
+}
+
+.btn_light_blue {
+	background-color: #067bc3;
+	color: #fff;
+}
+.box_outer {
+	border: 1px solid #49ae8f;
+}
+.btn_green {
+	background-color: #29a07b;
+}
+.border_dotted {
+	border-right: 6px dotted #29a07b;
+	min-height: 500px;
+}
+.heading_blue h4 {
+	color: #067bc3;
+}
+.social_links {
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+}
+footer a {
+	color: #fff;
+}
+.social_links li {
+	padding: 0px 5px;
+}
+.footer_link {
+	list-style: none;
+}
+
+
+
+/***********
+* Login Page
+***********/
+
+.bg_light_green {
+	background-color: #94cfbd;
+	border-radius: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
