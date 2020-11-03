@@ -32,6 +32,18 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+$routes->get('/room/(:num)', 'Room::index/$1');
+$routes->get('/api-sessions/get-token/(:alphanum)', 'ApiSession::get_token/$1');
+$routes->get('/api-session/create_tokens/(:num)', 'ApiSession::create_tokens/$1');
+
+
+// Admin Routes
+$routes->get('/admin/room/(:num)', 'AdminRoom::index/$1');
+$routes->get('/adminroom/ishost/', 'AdminRoom::isHost');
+$routes->post('/adminroom/get_game_session_data/', 'AdminRoom::get_game_session_data');
+
+
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing

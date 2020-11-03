@@ -1,0 +1,215 @@
+
+.bg_dark_blue {
+	background-color: #064165;
+}
+
+.btn_light_blue {
+	background-color: #067bc3;
+	color: #fff;
+}
+.box_outer {
+	border: 1px solid #49ae8f;
+}
+.btn_green {
+	background-color: #29a07b;
+}
+.border_dotted {
+	border-right: 6px dotted #29a07b;
+	min-height: 500px;
+}
+.heading_blue h4 {
+	color: #067bc3;
+}
+.social_links {
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+}
+footer a {
+	color: #fff;
+}
+.social_links li {
+	padding: 0px 5px;
+}
+.footer_link {
+	list-style: none;
+}
+
+
+
+/********************** 
+*Start Header & Menu 
+**********************/
+
+.sidenav a {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+.header_inner {
+	width: 100%;
+}
+.header .nav > li {
+	margin: 0px;
+	padding: 0px;
+}
+.main {
+  margin-left: 200px; /* Same as the width of the sidenav */
+}
+.dashboard .header_bg{
+	background-color: #f6f7fb;
+}
+.icon_style .circle {
+	background-color: #fff;
+	padding: 4px 8px;
+	margin: 0px 10px;
+	border-radius: 50%;
+	line-height: 20px;
+}
+.icon_style .circle i {
+	color: #8d99a7;
+}
+.icon_style a {
+	color: #8d99a7;
+}
+.icon_style a img {
+	border-radius: 50%;
+}
+.navbar .nav.pull-right {
+	float: right;
+}
+
+.sidenav_right_menu a:hover {
+	text-decoration: none;
+}
+.side_menu_btn .btn.btn-primary {
+	background-color: #f1edfe;
+	border-color: transparent;
+	border-radius: 0px 25px 25px 25px;
+	color: #7e5cf7;
+	padding: 10px 40px;
+}
+.card_btn {
+	display: flex;
+}
+.card_btn .card {
+	align-items: center;
+	align-self: center;
+	width: 100%;
+	border: 0px;
+}
+.card_btn .card .btn.btn-primary {
+	width: 100%;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+/********************** 
+*End Header & Menu 
+**********************/
+
+
+/********************** 
+*Start Responsive Menu 
+**********************/
+
+.sidenav22 {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav22 a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav2 a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav2 .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav2 {padding-top: 15px;}
+  .sidenav2 a {font-size: 18px;}
+}
+
+/********************** 
+End Responsive Menu 
+***********************/
+
+
+/********************** 
+Start Profile Setting 
+***********************/
+
+.profile_button {
+	width: 150px;
+	border-radius: 20px;
+}
+.profile_button_2 {
+	background-color: transparent !important;
+	color: #ffc107;
+}
+button.profile_button {
+	border-radius: 20px;
+}
+button.profile_button_2 {
+	background-color: transparent !important;
+	color: #ffc107;
+}
+
+/********************** 
+End  Profile Setting
+***********************/
+
+
+/************************** 
+Start Admin Game Settings
+***************************/
+
+
+/********************** 
+End Admin Game Settings
+***********************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
