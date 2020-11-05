@@ -23,6 +23,11 @@ class GameSessions extends Migration
 				'null' => true,
 
 			],
+			'session_id' => [
+				'type' => 'VARCHAR',
+				'constraint' => 50,
+				'null' => true,
+			]
 		]);
 		$this->forge->addKey('id', true);
 		$this->forge->createTable('game_sessions');

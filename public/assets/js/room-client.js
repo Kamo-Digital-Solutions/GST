@@ -5,9 +5,26 @@ var sessionName;	// Name of the video session the user will connect to
 var token;			// Token retrieved from OpenVidu Server
 
 var nickName = "";
+var role = "";
 
 $(function() {
-	joinSession();
+	// Get the username
+	$.ajax({
+		type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/user/get_username/', // the url where we want to POST
+		data        : "", // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	})
+	// using the done promise callback
+	.done(function(data) {
+		nickName = data.username;
+		console.log(nickName);
+		console.log("ID: "+data.id);
+		console.log("Logged IN: "+ data.logged_in);
+		console.log("NickName = ", nickName);
+		joinSession();
+	});
 });
 
 /* OPENVIDU METHODS */
@@ -48,89 +65,50 @@ function joinSession() {
 
 		// --- 4) Connect to the session passing the retrieved token and some more data from
 		//        the client (in this case a JSON with the nickname chosen by the user) ---
-		
-
-		// Get the username
-		$.ajax({
-			type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
-			url         : '/user/get_username/', // the url where we want to POST
-			data        : "", // our data object
-			dataType    : 'json', // what type of data do we expect back from the server
-			encode          : true
-		})
-		// using the done promise callback
-		.done(function(data) {
-			nickName = data.username;
-			console.log(nickName);
-			console.log("ID: "+data.id);
-			console.log("Logged IN: "+ data.logged_in);
-		});
 
 		session.connect(token, { clientData: nickName })
-			.then(() => {
+		.then(() => {
 
-				// --- 5) Set page layout for active call ---
+			// --- 5) Set page layout for active call ---
 
-				var score = 0;
-				//$('#session-title').text(sessionName);
+			var score = 0;
+			//$('#session-title').text(sessionName);
 
-					// --- 6) Get your own camera stream ---
+				// --- 6) Get your own camera stream ---
 
-					var publisher = OV.initPublisher('video-container', {
-						audioSource: undefined, // The source of audio. If undefined default microphone
-						videoSource: undefined, // The source of video. If undefined default webcam
-						publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-						publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-						resolution: '640x480',  // The resolution of your video
-						frameRate: 30,			// The frame rate of your video
-						insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-						mirror: false       	// Whether to mirror your local video or not
-					});
+				var publisher = OV.initPublisher('video-container', {
+					audioSource: undefined, // The source of audio. If undefined default microphone
+					videoSource: undefined, // The source of video. If undefined default webcam
+					publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+					publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+					resolution: '640x480',  // The resolution of your video
+					frameRate: 30,			// The frame rate of your video
+					insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+					mirror: false       	// Whether to mirror your local video or not
+				});
 
-					// --- 7) Specify the actions when events take place in our publisher ---
-
-					// Check the role if is a host or not
-					var role = "";
-					$.ajax({
-						type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
-						url         : '/adminroom/ishost/', // the url where we want to POST
-						data        : "", // our data object
-						dataType    : 'json', // what type of data do we expect back from the server
-						encode          : true
-					})
-					// using the done promise callback
-					.done(function(data) {
-						// log data to the console so we can see
-						if(data.result == "true")
-						{
-							console.log("true");
-							role = "host";
-						} else {
-							role = "participant";
-						}
-	
-					});
-					// When our HTML video has been added to DOM...
-					publisher.on('videoElementCreated', (event) => {
-						// Init the main video with ours and append our data
-						var userData = {
-							nickName: nickName,
-							score: score,
-							role: role
-						};
-						//initMainVideo(event.element, userData);
-						appendUserData(event.element, userData);
-						$(event.element).prop('muted', true); // Mute local video
-					});
+				// --- 7) Specify the actions when events take place in our publisher ---
+				// When our HTML video has been added to DOM...
+				publisher.on('videoElementCreated', (event) => {
+					// Init the main video with ours and append our data
+					var userData = {
+						nickName: nickName,
+						score: score,
+						role: "participant"
+					};
+					//initMainVideo(event.element, userData);
+					appendUserData(event.element, userData);
+					$(event.element).prop('muted', true); // Mute local video
+				});
 
 
-					// --- 8) Publish your stream ---
+				// --- 8) Publish your stream ---
 
-					session.publish(publisher);
-			})
-			.catch(error => {
-				console.warn('There was an error connecting to the session:', error.code, error.message);
-			});
+				session.publish(publisher);
+		})
+		.catch(error => {
+			console.warn('There was an error connecting to the session:', error.code, error.message);
+		});
 
 			session.on('signal', (event) => {
 				console.log("New Msg Received!");
@@ -149,21 +127,6 @@ function joinSession() {
 	});
 
 	return false;
-}
-
-
-function leaveSession() {
-
-	// --- 9) Leave the session by calling 'disconnect' method over the Session object ---
-
-	session.disconnect();
-	session = null;
-
-	// Removing all HTML elements with the user's nicknames
-	cleanSessionView();
-
-	$('#join').show();
-	$('#session').hide();
 }
 
 function getToken(callback) {
@@ -190,17 +153,13 @@ function getToken(callback) {
 	);
 }
 
-function removeUser() {
+function removeUserData(connection) {
 
-	// Function is note working
-	httpPostRequest(
-		'api-sessions/remove-user',
-		{sessionName: sessionName, token: token},
-		'User couldn\'t be removed from session', 
-		(response) => {
-			console.warn("You have been removed from session " + sessionName);
-		}
-	);
+	var userNameRemoved = $("#data-" + connection.connectionId);
+	if ($(userNameRemoved).find('p.userName').html() === $('#main-video p.userName').html()) {
+		cleanMainVideo(); // The participant focused in the main video has left
+	}
+	$("#data-" + connection.connectionId).remove();
 }
 
 function httpPostRequest(url, body, errorMsg, callback) {
@@ -263,18 +222,3 @@ function update_score(user_id, score) {
 	// TODO
 }
 
-/*
-function addClickListener(videoElement, clientData, serverData) {
-	videoElement.addEventListener('click', function () {
-		var mainVideo = $('#main-video video').get(0);
-		if (mainVideo.srcObject !== videoElement.srcObject) {
-			$('#main-video').fadeOut("fast", () => {
-				$('#main-video p.nickName').html(clientData);
-				$('#main-video p.userName').html(serverData);
-				mainVideo.srcObject = videoElement.srcObject;
-				$('#main-video').fadeIn("fast");
-			});
-		}
-	});
-}
-*/

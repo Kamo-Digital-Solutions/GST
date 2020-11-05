@@ -30,5 +30,19 @@ class AdminRoomModel extends Model
 		return $query->getResult();
 	}
 
+	public function add_session_id($id, $session_id) {
+		$builder = $this->db->table('game_sessions');
+
+		$data = [
+			'session_id' => $session_id,
+		];
+	
+		$builder->where('id', $id);
+
+		$builder->update($data);
+		
+		return true;
+	}
+
 
 }

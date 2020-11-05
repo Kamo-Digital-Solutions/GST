@@ -31,32 +31,15 @@ class UsersModel extends Model
 		return true;
 	}
 
-	public function get_all_user_in_session($session_id) {
-		$builder = $this->db->table('game_sessions_enrollements');
-		$query = $builder->where(['game_session_id' => $session_id]);
-		return $query->get()->getResult();
-
-	}
-
-	public function get_user_token($session_id, $user_id) {
-		$builder = $this->db->table('game_sessions_enrollements');
-		$query = $builder->where(['game_session_id' => $session_id]);
-		$query = $builder->where(['user_id' => $user_id]);
-		return $query->get()->getResult();
-	}
-
-	public function add_token($session_id, $user_id, $token) {
-		$builder = $this->db->table('game_sessions_enrollements');
-
-		$data = [
-			'token' => $token,
-		];
-	
-		$builder->where('game_session_id', $session_id);
-		$builder->where('user_id', $user_id);
-
-		$builder->update($data);
+	public function get_user_session($user_id, $room_id) {
 		
-		return true;
+		$builder = $this->db->table('game_sessions');
+		$builder->select('session_id');
+		$builder->join('game_sessions_enrollements', 'game_sessions_enrollements.game_session_id = game_sessions.id');
+		$builder->where(['game_sessions_enrollements.user_id' => $user_id]);
+		$builder->where('game_sessions.game_id', $room_id);
+
+		return $builder->get()->getResult();
 	}
+
 }

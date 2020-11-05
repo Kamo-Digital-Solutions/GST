@@ -40,38 +40,28 @@
                         <button id="showVideo" class="btn bg_dark_blue game_btn">Open camera</button>
                     </div>
 
-                    <form action="#" method="post">
-                        <div class="form-group">
-                            <label for="players">Choose a player:</label>
+					<div class="form-group">
+						<label for="players">Choose a player:</label>
+						
+						<select name="players" id="players">
+						</select>     
+					</div>
 
-                            <select name="players" id="players">
-                              <option value="p1t1">Player-1 Team 1</option>
-                              <option value="p2t1">Player-2 Team 1</option>
-                              <option value="p3t1">Player-3 Team 1</option>
-                              <option value="p4t1">Player-4 Team 1</option>
-                              <option value="p1t2">Player-1 Team 2</option>
-                              <option value="p2t2">Player-2 Team 2</option>
-                              <option value="p3t2">Player-3 Team 2</option>
-                              <option value="p4t2">Player-4 Team 2</option>
-                            </select>     
-                        </div>
+					<div class="form-group">
+						<label for="scores">Choose a score:</label>
 
-                        <div class="form-group">
-                            <label for="scores">Choose a score:</label>
+						<select name="scores" id="scores">
+							<option value="200">200</option>
+							<option value="400">400</option>
+							<option value="600">600</option>
+							<option value="800">800</option>
+							<option value="1000">1000</option>
+						</select> 
+					</div>
 
-                            <select name="scores" id="scores">
-                              <option value="200">200</option>
-                              <option value="400">400</option>
-                              <option value="600">600</option>
-                              <option value="800">800</option>
-                              <option value="1000">1000</option>
-                            </select> 
-                        </div>
-
-                        <button class="btn bg_dark_blue game_btn">Add</button>
-                        <button class="btn bg_dark_blue game_btn">Subtract</button>
+					<button class="btn bg_dark_blue game_btn" onclick="set_score('add')">Add</button>
+					<button class="btn bg_dark_blue game_btn" onclick="set_score('sub')">Subtract</button>
     
-                    </form>
 					<button class="btn btn-primary" onclick="send_score()">Send Msg</button>
 					<!-- For OpenVidu -->
 					<div id="session">

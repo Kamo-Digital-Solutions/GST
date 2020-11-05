@@ -48,11 +48,6 @@ class GameSessionsEnrollments extends Migration
 				'unsigned' => true,
 				'null' => true,
 			],
-			'token' => [
-				'type' => 'VARCHAR',
-				'constraint' => 500,
-				'null' => true,
-			]
 		]);
 		$this->forge->addKey('id', true);
 		$this->forge->createTable('game_sessions_enrollements');

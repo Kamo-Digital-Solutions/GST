@@ -35,6 +35,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/room/(:num)', 'Room::index/$1');
 $routes->get('/api-sessions/get-token/(:alphanum)', 'ApiSession::get_token/$1');
 $routes->get('/api-session/create_tokens/(:num)', 'ApiSession::create_tokens/$1');
+$routes->post('/api-session/set_user_score/', 'AdminRoom::set_user_score');
 
 
 // Admin Routes
