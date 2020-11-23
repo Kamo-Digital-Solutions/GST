@@ -21,6 +21,10 @@ class GameData extends Migration
 			'data' => [
 				'type' => 'TEXT',
 			],
+			'current_data' => [
+				'type' => 'TEXT',
+				'null' => true,
+			],
 			'game_session_id' => [
 				'type' => 'INT',
 				'constraint' => 11,
