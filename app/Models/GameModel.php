@@ -33,4 +33,30 @@ class GameModel extends Model
 		return $builder->get()->getResult();
 	}
 
+
+	public function is_enrolled($session_id, $user_id) {
+		$builder = $this->db->table('game_sessions_enrollements');
+		$builder->where('game_session_id', $session_id);
+		$builder->where('user_id', $user_id);
+
+		return $builder->get()->getResult();
+	}
+
+	public function get_teams($session_id) {
+		$builder = $this->db->table('game_sessions_enrollements');
+		$builder->select('team_id');
+		$builder->orderBy('team_id', 'ASC');
+		$builder->distinct();
+		$builder->where('game_session_id', $session_id);
+
+		return $builder->get()->getResult();
+	}
+
+	public function get_user_team_id($user_id, $session_id) {
+		$builder = $this->db->table('game_sessions_enrollements');
+		$builder->where('game_session_id', $session_id);
+		$builder->where('user_id', $user_id);
+		
+		return $builder->get()->getResult();
+	}
 }

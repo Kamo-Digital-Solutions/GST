@@ -8,6 +8,7 @@ use Stopka\OpenviduPhpClient\Session\SessionPropertiesBuilder;
 use Stopka\OpenviduPhpClient\Session\Token\TokenOptionsBuilder;
 
 use App\Models\UsersModel;
+use App\Models\GameDataModel;
 use App\Models\GameModel;
 use App\Models\AdminRoomModel;
 
@@ -18,7 +19,7 @@ class ApiSession extends Controller {
 		$session = session();
 
 		// todo: Add these to settings table
-		$OPENVIDU_URL = "https://localhost:4443 "; // Where the OpenVidu server is located.
+		$OPENVIDU_URL = "https://beta.gameshowtime.com/"; // Where the OpenVidu server is located.
 		$OPENVIDU_SECRET = "16379284-8725-4411-82fd-6dabdf2ca468"; // Our OpenVidu Pro Key
 
 		// If he is not logged in, Redirect to Login
@@ -61,7 +62,7 @@ class ApiSession extends Controller {
 
 		// TEMP DATA
 		// todo: Add these to settings table
-		$OPENVIDU_URL = "https://localhost:4443 "; // Where the OpenVidu server is located.
+		$OPENVIDU_URL = "https://beta.gameshowtime.com/"; // Where the OpenVidu server is located.
 		$OPENVIDU_SECRET = "16379284-8725-4411-82fd-6dabdf2ca468"; // Our OpenVidu Pro Key
 		
 		$openvidu = new OpenVidu($OPENVIDU_URL, $OPENVIDU_SECRET);
@@ -85,7 +86,7 @@ class ApiSession extends Controller {
 		
 	}
 
-	public function get_users_score($session_id) {
+	public function get_users_score() {
 		$session = session();
 		$request = \Config\Services::request();
 
@@ -94,14 +95,14 @@ class ApiSession extends Controller {
 			return redirect()->to('/auth/signin');
 		}
 
-		$game_session = $request->getPost('game_session');
+		$game_session = $request->getGet('game_session');
 
 			// ToDo: Check if he is a participant in this game session
 
 			$gameModel = new GameModel();
 			//$user_id = $_SESSION['user_id'];
 
-			$scores = $gameModel->get_users_score($session_id);
+			$scores = $gameModel->get_users_score($game_session);
 
 			$scores_results = [];
 			foreach($scores as $score) {
@@ -123,10 +124,10 @@ class ApiSession extends Controller {
 		$session = session();
 		$request = \Config\Services::request();
 
-		// Check if he logged in
-		//if(!isset($_SESSION['logged_in'])) {
-		//	return redirect()->to('/auth/signin');
-		//}
+		//Check if he logged in
+		if(!isset($_SESSION['logged_in'])) {
+			return redirect()->to('/auth/signin');
+		}
 
 		$game_session = $request->getPost('game_session');
 		$user_id = $request->getPost('user_id');
@@ -139,5 +140,50 @@ class ApiSession extends Controller {
 		$gameModel->set_user_score($game_session, $user_id, $score);
 
 		return $score;
+	}
+
+	public function set_current_game_data() {
+		$session = session();
+		$request = \Config\Services::request();
+		 
+		//Check if he logged in
+		 if(!isset($_SESSION['logged_in'])) {
+			return redirect()->to('/auth/signin');
+		}
+
+		$game_session = $request->getPost('game_session');
+
+		$game_data = $request->getPost('game_data');
+
+		$gameDataModel = new GameDataModel();
+
+		$current_data = $gameDataModel->set_current_data($game_session, $_SESSION['user_id'], $game_data);
+		//$current_data = $gameDataModel->set_current_data(1, 2, "<h1>Hichem</h1>");
+
+		var_dump($current_data);
+		return true;
+	}
+
+	public function get_current_game_data() {
+		$session = session();
+		$request = \Config\Services::request();
+
+		//Check if he logged in
+		if(!isset($_SESSION['logged_in'])) {
+			return redirect()->to('/auth/signin');
+		}
+		
+		$game_session = $request->getGet('game_session');
+		
+		$gameDataModel = new GameDataModel();
+
+		$current_data = $gameDataModel->get_current_data($game_session);
+
+		echo json_encode([
+			'code' => urldecode($current_data[0]->current_data),
+		]);
+		
+		return true;
+
 	}
 }

@@ -14,6 +14,7 @@ class AdminRoomModel extends Model
         $this->validation =  \Config\Services::validation();
 	}
 
+	// there is an error here
 	public function get_where($data) {
 		$builder = $this->db->table('game_sessions_enrollements');
 		foreach($data as $key => $value) {
@@ -24,10 +25,10 @@ class AdminRoomModel extends Model
 
 	public function is_host($data) {
 		$builder = $this->db->table('game_sessions_enrollements');
-		$query = $builder->getWhere(['user_id' => $data]);
-		$query = $builder->getWhere(['is_host' => 1]);
+		$builder->where('user_id', $data);
+		$builder->where('is_host', 1);
 
-		return $query->getResult();
+		return $builder->get()->getResult();
 	}
 
 	public function add_session_id($id, $session_id) {

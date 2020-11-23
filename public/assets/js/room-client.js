@@ -3,29 +3,83 @@ var session;
 
 var sessionName;	// Name of the video session the user will connect to
 var token;			// Token retrieved from OpenVidu Server
+var publisher;
+var audioEnabled;
+var buzzerDisabled = false;
 
 var nickName = "";
+var userid = "";
 var role = "";
+var game_session = "";
+var timer;
+var team_id;
 
-$(function() {
+function get_session_id() {
+	var url = $(location).attr('href');
+	var parts = url.split("/");
+	if (parts[parts.length - 1] == "") {
+		var last_part = parts[parts.length - 2];
+
+	} else {
+		var last_part = parts[parts.length - 1];
+	}
+
+	return last_part;
+}
+
+$(function () {
+	formdata = {
+		"session_id" : get_session_id()
+	}
 	// Get the username
 	$.ajax({
-		type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
-		url         : '/user/get_username/', // the url where we want to POST
-		data        : "", // our data object
-		dataType    : 'json', // what type of data do we expect back from the server
-		encode          : true
+		type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url: '/user/get_username/', // the url where we want to POST
+		data: formdata, // our data object
+		dataType: 'json', // what type of data do we expect back from the server
+		encode: true
 	})
-	// using the done promise callback
-	.done(function(data) {
-		nickName = data.username;
-		console.log(nickName);
-		console.log("ID: "+data.id);
-		console.log("Logged IN: "+ data.logged_in);
-		console.log("NickName = ", nickName);
-		joinSession();
-	});
+		// using the done promise callback
+		.done(function (data) {
+			nickName = data.username;
+			userid = data.id;
+			team_id = data.team_id;
+			// get session from url
+			var url = $(location).attr('href');
+			var parts = url.split("/");
+			if (parts[parts.length - 1] == "") {
+				game_session = parts[parts.length - 2];
+
+			} else {
+				game_session = parts[parts.length - 1];
+			}
+			joinSession();
+			get_game_data();
+		});
+	setInterval(function () { update_scores(); }, 3000);
+
 });
+
+
+function get_game_data() {
+	s_id = get_session_id();
+
+	data = {
+		"game_session": s_id,
+	}
+	// Get the username
+	$.ajax({
+		type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url: '/api-sessions/get_current_game_data/', // the url where we want to POST
+		data: data, // our data object
+		dataType: 'json', // what type of data do we expect back from the server
+		encode: true
+	})// using the done promise callback
+		.done(function (data) {
+			if(data.code)
+				update_game(data.code);
+		});
+}
 
 /* OPENVIDU METHODS */
 
@@ -51,9 +105,15 @@ function joinSession() {
 
 			// When the HTML video has been appended to DOM...
 			subscriber.on('videoElementCreated', (event) => {
+				//JSON.parse(connection.data.split('%/%')[0]).clientData
 
+				console.log("Team TEAM " + JSON.parse(subscriber.stream.connection.data.split('%/%')[0]).team_id);
+				if (JSON.parse(subscriber.stream.connection.data.split('%/%')[0]).role == "host") {
+					initMainVideo(event.element, subscriber.stream.connection);
+				} else {
+					appendUserData(event.element, subscriber.stream.connection);
+				}
 				// Add a new HTML element for the user's name and nickname over its video
-				appendUserData(event.element, subscriber.stream.connection);
 			});
 		});
 
@@ -66,17 +126,17 @@ function joinSession() {
 		// --- 4) Connect to the session passing the retrieved token and some more data from
 		//        the client (in this case a JSON with the nickname chosen by the user) ---
 
-		session.connect(token, { clientData: nickName })
-		.then(() => {
+		session.connect(token, { clientData: nickName, u_id: userid, team_id: team_id })
+			.then(() => {
 
-			// --- 5) Set page layout for active call ---
+				// --- 5) Set page layout for active call ---
 
-			var score = 0;
-			//$('#session-title').text(sessionName);
+				var score = 0;
+				//$('#session-title').text(sessionName);
 
 				// --- 6) Get your own camera stream ---
 
-				var publisher = OV.initPublisher('video-container', {
+				publisher = OV.initPublisher('video-container', {
 					audioSource: undefined, // The source of audio. If undefined default microphone
 					videoSource: undefined, // The source of video. If undefined default webcam
 					publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
@@ -94,55 +154,74 @@ function joinSession() {
 					var userData = {
 						nickName: nickName,
 						score: score,
-						role: "participant"
+						u_id: userid,
+						role: "participant",
+						team_id: team_id
 					};
 					//initMainVideo(event.element, userData);
 					appendUserData(event.element, userData);
 					$(event.element).prop('muted', true); // Mute local video
 				});
 
-
 				// --- 8) Publish your stream ---
 
 				session.publish(publisher);
-		})
-		.catch(error => {
-			console.warn('There was an error connecting to the session:', error.code, error.message);
-		});
-
-			session.on('signal', (event) => {
-				console.log("New Msg Received!");
-				if(event.type == "signal:update-score") {
-					userToChange = JSON.parse(event.data).user;
-					newScore = JSON.parse(event.data).score;
-
-					console.log(userToChange);
-					console.log(newScore);
-					update_score(userToChange, newScore);
-				}
-				//console.log(event.data); // Message
-				//console.log(event.from); // Connection object of the sender
-				//console.log(event.type); // The type of message
+			})
+			.catch(error => {
+				console.warn('There was an error connecting to the session:', error.code, error.message);
 			});
+
+		session.on('signal', (event) => {
+			if (event.type == "signal:update-score") {
+				update_scores();
+			} else if (event.type == "signal:lock-buzzer") {
+				lock_buzzer();
+			} else if  (event.type == "signal:unlock-buzzer") {
+				unlock_buzzer();
+			} else if (event.type == "signal:mute") {
+				if (event.data == userid || event.data == "") {
+					mute_me();
+				}
+			} else if (event.type == "signal:unmute") {
+				if (event.data == userid || event.data == "") {
+					unmute_me();
+				}
+			} else if (event.type == "signal:role") {
+				if (event.data == userid) {
+					startBuzzer();
+				}
+			} else if (event.type == "signal:game-status") {
+				update_game(event.data);
+			}
+			//console.log(event.data); // Message
+			//console.log(event.from); // Connection object of the sender
+			console.log(event.type); // The type of message
+		});
 	});
 
 	return false;
 }
 
+function update_game(data) {
+	$("#game-dashboard").empty();
+	$("#game-dashboard").append(data);
+	console.log("Updated");
+}
+
 function getToken(callback) {
 	var url = $(location).attr('href');
 	var parts = url.split("/");
-	if(parts[parts.length-1] == "") {
-		var last_part = parts[parts.length-2];
+	if (parts[parts.length - 1] == "") {
+		var last_part = parts[parts.length - 2];
 
 	} else {
-		var last_part = parts[parts.length-1];
+		var last_part = parts[parts.length - 1];
 	}
 
 	sessionName = last_part;
 
 	httpPostRequest(
-		'/api-sessions/get-token/'+sessionName,
+		'/api-sessions/get-token/' + sessionName,
 		{},
 		'Request of TOKEN gone WRONG:',
 		(response) => {
@@ -160,6 +239,10 @@ function removeUserData(connection) {
 		cleanMainVideo(); // The participant focused in the main video has left
 	}
 	$("#data-" + connection.connectionId).remove();
+}
+
+function cleanMainVideo() {
+	$('#main-video').empty();
 }
 
 function httpPostRequest(url, body, errorMsg, callback) {
@@ -185,40 +268,118 @@ function httpPostRequest(url, body, errorMsg, callback) {
 	}
 }
 
+function appendGameDashboard(gameElement, connection) {
+	document.getElementById("game-dashboard").appendChild(gameElement);
+	console.log("The game has been append");
+}
+
 function appendUserData(videoElement, connection) {
 	var clientData;
 	var serverData;
 	var nodeId;
+	var u_id;
+	console.log(connection);
 	if (connection.nickName) { // Appending local video data
 		clientData = connection.nickName;
+		u_id = connection.u_id;
 		serverData = connection.score;
-
 		nodeId = 'main-videodata';
 	} else {
 		clientData = JSON.parse(connection.data.split('%/%')[0]).clientData;
+		u_id = JSON.parse(connection.data.split('%/%')[0]).u_id;
 		serverData = JSON.parse(connection.data.split('%/%')[1]).serverData;
 		nodeId = connection.connectionId;
 	}
+
 	var dataNode = document.createElement('div');
 	dataNode.className = "data-node";
 	dataNode.id = "data-" + nodeId;
-	dataNode.innerHTML = "<p class='nickName'>" + clientData + "</p><p class='userName'>" + serverData + "</p>";
+	dataNode.innerHTML = "<p class='nickName'>" + clientData + "</p><p class='userName' id='user_score_" + u_id + "'>" + serverData + "</p>";
 	videoElement.parentNode.insertBefore(dataNode, videoElement.nextSibling);
-	//addClickListener(videoElement, clientData, serverData);
 
-	if (connection.role == "host") {
-		initMainVideo(videoElement, connection);
-	}
 }
 
 function initMainVideo(videoElement, userData) {
-	$('#main-video video').get(0).srcObject = videoElement.srcObject;
-	$('#main-video p.nickName').html(userData.nickName);
-	$('#main-video p.userName').html(userData.userName);
-	$('#main-video video').prop('muted', true);
+	//$('#main-video video').get(0).srcObject = videoElement.srcObject;
+	//console.log(videoElement);
+	//$('#main-video video').prop('muted', true);
+	$('#main-video').get(0).append(videoElement);
+	$('#main-video').width(400);
+	update_scores();
 }
 
-function update_score(user_id, score) {
-	// TODO
+function update_scores() {
+	data = {
+		"game_session": game_session,
+	}
+	// Get the username
+	$.ajax({
+		type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url: '/api-sessions/get_users_score/', // the url where we want to POST
+		data: data, // our data object
+		dataType: 'json', // what type of data do we expect back from the server
+		encode: true
+	})// using the done promise callback
+		.done(function (data) {
+			for (var i = 0; i < data.scores.length; i++) {
+				$("#user_score_" + data.scores[i].user_id).html(data.scores[i].score);
+			}
+		});
 }
 
+/// Buzzer
+
+// On Buzzer click, start counting
+$("#buzzer").click(function () {
+	$("#buzzer").prop('disabled', true);
+
+	//startBuzzer();
+
+	session.signal({
+		data: nickName,  // Any string (optional)
+		to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+		type: 'buzzer'             // The type of message (optional)
+	})
+		.then(() => {
+			console.log('Message successfully sent');
+		})
+		.catch(error => {
+			console.error(error);
+		});
+});
+
+function startBuzzer() {
+	timer = 5;
+	var x = setInterval(function () {
+		$("#timer").html(timer);
+		timer--;
+		if (timer < 0) {
+			clearInterval(x);
+			$("#buzzer").prop('disabled', false);
+		}
+	}, 1000);
+}
+
+function mute_me() {
+	audioEnabled = false;
+	publisher.publishAudio(audioEnabled);
+	console.log("Muted");
+}
+
+function unmute_me() {
+	audioEnabled = true;
+	publisher.publishAudio(audioEnabled);
+	console.log("UnMuted");
+}
+
+function unlock_buzzer() {
+	buzzerDisabled = false;
+	$("#buzzer").prop('disabled', buzzerDisabled);
+	console.log("UnlockBuzzer");
+}
+
+function lock_buzzer() {
+	buzzerDisabled = true;
+	$("#buzzer").prop('disabled', buzzerDisabled);
+	console.log("LockBuzzer");
+}

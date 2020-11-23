@@ -36,16 +36,81 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 		// Using Query Builder
 		$this->db->table("users")->insert($data);
 
+		// More user data for teams
+
+		$data = [
+			'firstname' => 'Mike',
+			'lastname' => 'Simpsong',
+			'email' => 'mike@gmail.com',
+			'country' => 'USA',
+			'state' => 'NY',
+			'city' => 'NYC',
+			'password' => '6ebe76c9fb411be97b3b0d48b791a7c9', // Paasword: 987654321
+			'team_id' => '',
+			'picture' => '',
+		];
+		// Using Query Builder
+		$this->db->table("users")->insert($data);
+
+		$data = [
+			'firstname' => 'Ronaldo',
+			'lastname' => 'Gon',
+			'email' => 'ronaldo@gmail.com',
+			'country' => 'USA',
+			'state' => 'NY',
+			'city' => 'NYC',
+			'password' => '6ebe76c9fb411be97b3b0d48b791a7c9', // Paasword: 987654321
+			'team_id' => '',
+			'picture' => '',
+		];
+		// Using Query Builder
+		$this->db->table("users")->insert($data);
+
+
 
 		////////////////////////////////////////////////////////
 		// Games Model
 		////////////////////////////////////////////////////////
 
+		///////////////
+		// Jeopardy ///
+		///////////////
 		$data = [
 			'name' => 'Jeopardy',
 		];
 		// Using Query Builder
 		$this->db->table("games")->insert($data);
+
+		//////////////////////
+		// Deal or no deal ///
+		//////////////////////
+		$data = [
+			'name' => 'Deal or no deal',
+		];
+		// Using Query Builder
+		$this->db->table("games")->insert($data);
+
+		//////////////////////
+		// Wheel of fortune //
+		//////////////////////
+
+		$data = [
+			'name' => 'Wheel of fortune',
+		];
+		// Using Query Builder
+		$this->db->table("games")->insert($data);
+		
+
+		//////////////////
+		// Family Feud ///
+		//////////////////
+
+		$data = [
+			'name' => 'Family Feud',
+		];
+		// Using Query Builder
+		$this->db->table("games")->insert($data);
+
 
 		////////////////////////////////////////////////////////
 		// Game Session Model
@@ -66,6 +131,26 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 			'game_session_id' => 1,
 			'team_id' => 1,
 			'user_id' => 1,
+			'score' => 0,
+			'rank' => 0,
+		];
+		// Using Query Builder
+		$this->db->table("game_sessions_enrollements")->insert($data);
+
+		$data = [
+			'game_session_id' => 1,
+			'team_id' => 1,
+			'user_id' => 3,
+			'score' => 0,
+			'rank' => 0,
+		];
+		// Using Query Builder
+		$this->db->table("game_sessions_enrollements")->insert($data);
+
+		$data = [
+			'game_session_id' => 1,
+			'team_id' => 2,
+			'user_id' => 4,
 			'score' => 0,
 			'rank' => 0,
 		];
@@ -95,6 +180,15 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 		// Using Query Builder
 		$this->db->table("teams")->insert($data);
 
+
+		$data = [
+			'team_name' => "Virus",
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("teams")->insert($data);
+
+
 		////////////////////////////////////////////////////////
 		// Members Model
 		////////////////////////////////////////////////////////
@@ -102,6 +196,24 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 		$data = [
 			'user_id' => 1,
 			'team_id' => 1,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("members")->insert($data);
+
+
+		$data = [
+			'user_id' => 3,
+			'team_id' => 1,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("members")->insert($data);
+
+
+		$data = [
+			'user_id' => 4,
+			'team_id' => 2,
 			'created_at' => date('Y-m-d H:i:s', time()),
 		];
 		// Using Query Builder

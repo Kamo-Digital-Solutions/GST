@@ -30,12 +30,16 @@
 
                 <!-- Mute Block -->
                 <div>
+					<textarea id="events_log" readonly></textarea>
                     <p>
                         Mute/lock all players
                     </p>
-                    <button class="btn bg_dark_blue game_btn">ON</button>
-                    <button class="btn bg_dark_blue game_btn">OFF</button>
-                    <button class="btn bg_dark_blue game_btn">Buzzer</button>
+                    <button class="btn bg_dark_blue game_btn" onclick="mute_user()">Mute all</button>
+                    <button class="btn bg_dark_blue game_btn" onclick="unmute_user()">Unmute all</button>
+                    <button class="btn bg_dark_blue game_btn" onclick="unlock_buzzers()">Unlock Buzzer</button>
+					<button class="btn bg_dark_blue game_btn" onclick="lock_buzzers()">Lock Buzzer</button>
+					<button class="btn bg_dark_blue game_btn" onclick="update_game_users()">Update</button>
+
                     <div class="col-md-12 mt-4 width-all">
                         <button id="showVideo" class="btn bg_dark_blue game_btn">Open camera</button>
                     </div>
@@ -62,18 +66,12 @@
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('add')">Add</button>
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('sub')">Subtract</button>
     
-					<button class="btn btn-primary" onclick="send_score()">Send Msg</button>
+					<button class="btn btn-primary" onclick="send_score();">Send Msg</button>
 					<!-- For OpenVidu -->
 					<div id="session">
 						<div id="video-container" class="col-md-6 width-all" style="max-width: 100%;"></div>
 					</div>
 
-					<!-- OpenVidu Main Video -->
-					<div id="main-video" class="col-md-6 text-center">
-						<p class="nickName"></p>
-						<p class="userName"></p>
-						<video autoplay playsinline="true"></video>
-					</div>
 
                 </div>
             </div>
@@ -81,16 +79,29 @@
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="jeopardy_boxes">
-                        </div>
+						<!-- OpenVidu Main Video -->
+						<div id="main-video" class="col-md-6 text-center">
+						</div>
+						<!-- <canvas id="canvas2" style="border:2px solid black;"></canvas> 
 
-                        <div class="jeopardy_question">
+						<div id="testcanvas">
+						</div>
+						-->
+						<div id="jeopardy_game">
+							<div class="jeopardy">
+								<div class="jeopardy_boxes">
 
-                        </div>
+								</div>
 
-                        <div class="jeopardy_answer">
-                            
-                        </div>
+								<div class="jeopardy_question">
+
+								</div>
+
+								<div class="jeopardy_answer">
+									
+								</div>
+							</div>
+						</div>
 
                     </div>
                 </div>
@@ -100,9 +111,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+	<script src="<?php echo base_url('assets/js/html2canvas.min.js'); ?>"></script>	
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
-	<script src="<?php echo base_url('assets/js/admin-jeopardy-view.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/js/room-admin.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/admin-jeopardy-view.js'); ?>"></script>
 
 </body>
 </html>

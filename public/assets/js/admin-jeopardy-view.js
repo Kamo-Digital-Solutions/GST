@@ -12,6 +12,7 @@ function show_question($cat, $que) {
 	$( ".jeopardy_question" ).show();
 	$( ".jeopardy_question" ).addClass("question_class");
 	$( ".jeopardy_question" ).append("<button class='jeopardy_button' onclick='show_answer("+$cat+","+$que+")'>"+game_data[$cat].questions[$que-1].question+"</button>");
+	update_game_users(); // from room-admin.js
 }
 
 function show_answer($cat, $que) {
@@ -20,12 +21,14 @@ function show_answer($cat, $que) {
 	$( ".jeopardy_answer" ).show();
 	$( ".jeopardy_answer" ).addClass("question_class");
 	$( ".jeopardy_answer" ).append("<button class='jeopardy_button' onclick='back_to_game()'>"+game_data[$cat].questions[$que-1].answer+"</button>");
+	update_game_users(); // from room-admin.js
 }
 
 function back_to_game() {
 	$(".jeopardy_button").remove();
 	$( ".jeopardy_answer" ).hide();
 	$( ".jeopardy_boxes" ).show();
+	update_game_users(); // from room-admin.js
 }
 
 
@@ -49,7 +52,7 @@ function get_Game_Data() {
 
 		// to add header
 		$( ".jeopardy_boxes" ).append("<div class='row' id='jeopardy_header'></div>");
-
+		
 
 		for(var i = 1; i<6; i++) {
 			console.log(game_data[i].category);
@@ -67,3 +70,4 @@ function get_Game_Data() {
 		}
 	});
 }
+

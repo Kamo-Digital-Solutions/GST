@@ -9,7 +9,12 @@ use App\Models\GameDataModel;
 class AdminRoom extends Controller {
 
 	public function index($id) {
-		return view('admin_room/index');
+
+		if($this->checkHost()) {
+			return view('admin_room/index');
+		} else {
+			return redirect()->to('/');
+		}
 	}
 
 	public function isHost() {
@@ -26,6 +31,19 @@ class AdminRoom extends Controller {
 				'result' => 'false',
 			]);
 		}
+	}
+
+	public function checkHost() {
+		$session = session();
+
+		$adminRoomModel = new AdminRoomModel();
+        $query = $adminRoomModel->is_host($_SESSION['user_id']);
+		if(count($query) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	public function get_game_session_data() {

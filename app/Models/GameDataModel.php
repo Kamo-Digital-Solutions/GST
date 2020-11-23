@@ -17,10 +17,34 @@ class GameDataModel extends Model
 		
 		$builder->select('data');
 
-		$query = $builder->getWhere(['owner_id' => $owner_id]);
-		$query = $builder->getWhere(['game_session_id' => $game_session_id]);
+		$builder->where('game_session_id', $game_session_id);
+		$builder->where('owner_id', $owner_id);
 
-		return $query->getResult();
+
+		return $builder->get()->getResult();
+	}
+
+	public function get_current_data($game_session_id) {
+		$builder = $this->db->table('game_data');
+		$builder->select('current_data');
+		$builder->where('game_session_id', $game_session_id);
+		
+		return $builder->get()->getResult();
+	}
+
+	public function set_current_data($game_session_id, $owner_id, $data) {
+		$builder = $this->db->table('game_data');
+		$builder->where('game_session_id', $game_session_id);
+		$builder->where('owner_id', $owner_id);
+
+		$array = [
+			'current_data'   => urlencode($data),
+		];
+	
+		$builder->update($array);
+
+		return true;
+
 	}
 
 }
