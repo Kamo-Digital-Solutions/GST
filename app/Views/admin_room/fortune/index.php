@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeopardy</title>
+    <title>Wheel of fortune</title>
 
     <!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,8 +17,13 @@
     <!-- User View CSS -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/game-view.css'); ?>">
 
+    <!-- User Wheel of fortune view CSS -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/games/wheel-of-fortune.css'); ?>">
+
     <!-- Roboto Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <style>
+    </style>
 </head>
 <body>
     <div class="container mt-4">
@@ -40,10 +45,6 @@
 					<button class="btn bg_dark_blue game_btn" onclick="lock_buzzers()">Lock Buzzer</button>
 					<button class="btn bg_dark_blue game_btn" onclick="update_game_users()">Update</button>
 
-                    <div class="col-md-12 mt-4 width-all">
-                        <button id="showVideo" class="btn bg_dark_blue game_btn">Open camera</button>
-                    </div>
-
 					<div class="form-group">
 						<label for="players">Choose a player:</label>
 						
@@ -52,21 +53,13 @@
 					</div>
 
 					<div class="form-group">
-						<label for="scores">Choose a score:</label>
-
-						<select name="scores" id="scores">
-							<option value="200">200</option>
-							<option value="400">400</option>
-							<option value="600">600</option>
-							<option value="800">800</option>
-							<option value="1000">1000</option>
-						</select> 
+						<label for="players">Score:</label>
+                        <input type="text" name="score" id="score">
 					</div>
 
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('add')">Add</button>
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('sub')">Subtract</button>
     
-					<button class="btn btn-primary" onclick="send_score();">Send Msg</button>
 					<!-- For OpenVidu -->
 					<div id="session">
 						<div id="video-container" class="col-md-6 width-all" style="max-width: 100%;"></div>
@@ -82,27 +75,24 @@
 						<!-- OpenVidu Main Video -->
 						<div id="main-video" class="col-md-6 text-center">
 						</div>
-						<!-- <canvas id="canvas2" style="border:2px solid black;"></canvas> 
+                        <div id="playArea" style="margin-bottom: 4%;">
+                            <button id="spin">spin wheel</button>
+                            <button id="vowel">buy vowel</button>
+                            <button id="solve">solve puzzle</button>
+                            <button id="newpuzzle">new puzzle</button>
+                            <div id="moneyArea">Score: $<span id="money">0</span>
 
-						<div id="testcanvas">
-						</div>
-						-->
-						<div id="main_game">
-							<div class="jeopardy">
-								<div class="jeopardy_boxes">
+                            </div>
+                        </div>
 
-								</div>
-
-								<div class="jeopardy_question">
-
-								</div>
-
-								<div class="jeopardy_answer">
-									
-								</div>
-							</div>
-						</div>
-
+                        <div id="main_game">
+                            <div id="game">
+                                <div id="display"></div>
+                                <div class="clear"></div>
+                                <div id="tick">⇩</div>
+                                <img id="wheel" src="http://i.imgur.com/R7JYazp.png" data-rotation="0" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -111,10 +101,12 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://unpkg.com/konva@7.2.0/konva.min.js"></script>
+
 	<script src="<?php echo base_url('assets/js/html2canvas.min.js'); ?>"></script>	
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
 	<script src="<?php echo base_url('assets/js/room-admin.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/js/admin-jeopardy-view.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/Wheel-of-fortune/wheel-admin-view.js'); ?>"></script>
 
 </body>
 </html>

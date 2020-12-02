@@ -155,8 +155,9 @@ function joinSession() {
 	return false;
 }
 
+// Update the game for the users
 function update_game_users() {
-	var gameData = document.getElementById("jeopardy_game").innerHTML;
+	var gameData = document.getElementById("main_game").innerHTML;
 	//console.log(gameData);
 
 	session.signal({
@@ -329,9 +330,11 @@ function update_scores() {
 	} else {
 		game_session = parts[parts.length-1];
 	}
+
 	data = {
 		"game_session": game_session,
 	}
+
 	// Get the username
 	$.ajax({
 		type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
@@ -360,7 +363,13 @@ function set_score(op) {
 		game_session = parts[parts.length-1];
 	}
 
-	score = $("#scores").children("option:selected").val();
+	if(!$("#score").val()) {
+		score = $("#scores").children("option:selected").val();
+	} else {
+		score = $("#score").val();
+	}
+
+	console.log("VALUE IS " + score);
 
 	if(op=="sub") {
 		score = score*-1;
@@ -423,37 +432,27 @@ function unlock_buzzers() {
 }
 
 function mute_user(id) {
-	/*
-	if(id == "") {
-		id = "0";
-	}
-	*/
 	session.signal({
 		data: id,  // Any string (optional)
 		to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
 		type: 'mute'             // The type of message (optional)
 	  })
 	  .then(() => {
-		  console.log('Message successfully sent');
+		  console.log('Message successfully sent for' + id);
 	  })
 	  .catch(error => {
 		  console.error(error);
 	  });
 }
 
-function unmute_user(id) {
-	/*
-	if(id == "") {
-		id = "0";
-	}*/
-
+function unmute_user(tp) {
 	session.signal({
 		data: id,  // Any string (optional)
 		to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
 		type: 'unmute'             // The type of message (optional)
 	  })
 	  .then(() => {
-		  console.log('Message successfully sent');
+		  console.log('Message successfully sent for ' + id);
 	  })
 	  .catch(error => {
 		  console.error(error);

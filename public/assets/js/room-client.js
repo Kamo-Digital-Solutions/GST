@@ -101,13 +101,15 @@ function joinSession() {
 
 			// Subscribe to the Stream to receive it
 			// HTML video will be appended to element with 'video-container' id
-			var subscriber = session.subscribe(event.stream, 'video-container');
+			if(JSON.parse(event.stream.connection.data.split('%/%')[0]).team_id == 1) {
+				var subscriber = session.subscribe(event.stream, 'video-container');
+			} else {
+				var subscriber = session.subscribe(event.stream, 'video-container2');
+			}
 
 			// When the HTML video has been appended to DOM...
 			subscriber.on('videoElementCreated', (event) => {
-				//JSON.parse(connection.data.split('%/%')[0]).clientData
 
-				console.log("Team TEAM " + JSON.parse(subscriber.stream.connection.data.split('%/%')[0]).team_id);
 				if (JSON.parse(subscriber.stream.connection.data.split('%/%')[0]).role == "host") {
 					initMainVideo(event.element, subscriber.stream.connection);
 				} else {
@@ -136,7 +138,11 @@ function joinSession() {
 
 				// --- 6) Get your own camera stream ---
 
-				publisher = OV.initPublisher('video-container', {
+				var videoContainer = "video-container";
+				if(team_id == 2)
+					videoContainer = "video-container2";
+
+				publisher = OV.initPublisher(videoContainer, {
 					audioSource: undefined, // The source of audio. If undefined default microphone
 					videoSource: undefined, // The source of video. If undefined default webcam
 					publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not

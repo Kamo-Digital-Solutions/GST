@@ -37,7 +37,7 @@ class UsersModel extends Model
 		$builder->select('session_id');
 		$builder->join('game_sessions_enrollements', 'game_sessions_enrollements.game_session_id = game_sessions.id');
 		$builder->where(['game_sessions_enrollements.user_id' => $user_id]);
-		$builder->where('game_sessions.game_id', $room_id);
+		$builder->where('game_sessions.id', $room_id);
 
 		return $builder->get()->getResult();
 	}

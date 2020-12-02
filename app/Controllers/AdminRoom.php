@@ -11,6 +11,8 @@ class AdminRoom extends Controller {
 	public function index($id) {
 
 		if($this->checkHost()) {
+			if($id == 2)
+				return view('admin_room/fortune/index');
 			return view('admin_room/index');
 		} else {
 			return redirect()->to('/');

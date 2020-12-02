@@ -39,7 +39,7 @@ class ApiSession extends Controller {
 		
 		$adminRoomModel->add_session_id($id, $session->getSessionId());
 
-		echo "Done";
+		//echo "Done";
 
 	}
 
@@ -76,9 +76,18 @@ class ApiSession extends Controller {
 		$tokenOptions = new TokenOptionsBuilder();
 		$tokenOptions->setRole(OpenViduRoleEnum::PUBLISHER)
 					->setData(json_encode($tokenData));
-		$token = $session->generateToken($tokenOptions->build(), $sessionID);
+		$token = $session->generateToken($tokenOptions->build(), (string) $sessionID);
 
-
+		// If there is no token, create one
+		if($token == false) {
+			$this->create_tokens($sessionid);
+			
+			$sessionID = $usersModel->get_user_session($user_id, $sessionid)[0]->session_id;
+			$tokenOptions = new TokenOptionsBuilder();
+			$tokenOptions->setRole(OpenViduRoleEnum::PUBLISHER)
+						->setData(json_encode($tokenData));	
+			$token = $session->generateToken($tokenOptions->build(), (string) $sessionID);
+		}
 		// return token
         echo json_encode([
             'token' => $token,

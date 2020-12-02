@@ -11,6 +11,10 @@ class Room extends Controller {
 		$gameModel = new GameModel();
         $query = $gameModel->is_enrolled($id, $_SESSION['user_id']);
 		if(count($query) > 0) {
+			// To change
+			if($id == 2) {
+				return view('room/fortune/index');
+			}
 			return view('room/index');
 		} else {
 			return redirect()->to('/auth/signin');
