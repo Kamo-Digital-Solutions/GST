@@ -11,9 +11,17 @@ class AdminRoom extends Controller {
 	public function index($id) {
 
 		if($this->checkHost()) {
-			if($id == 2)
+			$gameDataModel = new GameDataModel();
+
+			$data = $gameDataModel->get_game_type($id);
+
+			if($data[0]->game_id == 3)
 				return view('admin_room/fortune/index');
-			return view('admin_room/index');
+			else if ($data[0]->game_id == 1) {
+				return view('admin_room/index');
+			} else {
+				return redirect()->to('/');
+			}
 		} else {
 			return redirect()->to('/');
 		}
@@ -45,7 +53,6 @@ class AdminRoom extends Controller {
 		} else {
 			return false;
 		}
-
 	}
 
 	public function get_game_session_data() {

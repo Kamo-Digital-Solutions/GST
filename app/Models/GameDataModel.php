@@ -47,4 +47,13 @@ class GameDataModel extends Model
 
 	}
 
+	public function get_game_type($id) {
+		$builder = $this->db->table('game_sessions');
+		$builder->select('game_id');
+		$builder->where('id', $id);
+
+		return $builder->get()->getResult();
+
+	}
+
 }

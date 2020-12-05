@@ -82,6 +82,10 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12" style="display: flex; justify-content: center;">
+                                        <button class="btn bg_dark_blue game_btn" onclick="start_videos()">Start videos</button>
+                                    </div>
+
+                                    <div class="col-md-12" style="display: flex; justify-content: center;">
 										<div id="main-video">
 											<!-- <video autoplay playsinline="true"></video> -->
 										</div>

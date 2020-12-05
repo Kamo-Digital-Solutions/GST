@@ -2,6 +2,7 @@
 
 use CodeIgniter\Controller;
 use App\Models\GameModel;
+use App\Models\GameDataModel;
 
 class Room extends Controller {
 
@@ -11,11 +12,17 @@ class Room extends Controller {
 		$gameModel = new GameModel();
         $query = $gameModel->is_enrolled($id, $_SESSION['user_id']);
 		if(count($query) > 0) {
-			// To change
-			if($id == 2) {
+			$gameDataModel = new GameDataModel();
+
+			$data = $gameDataModel->get_game_type($id);
+
+			if($data[0]->game_id == 3) {
 				return view('room/fortune/index');
+			} else if ($data[0]->game_id == 1) {
+				return view('room/index');
+			} else {
+				return redirect()->to('/auth/signin');
 			}
-			return view('room/index');
 		} else {
 			return redirect()->to('/auth/signin');
 		}

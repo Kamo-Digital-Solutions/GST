@@ -46,6 +46,7 @@ $(function() {
 		joinSession();
 	});
 	setInterval(function(){ update_scores(); }, 3000);
+	setInterval(function(){ update_states(); }, 1500);
 
 });
 
@@ -290,6 +291,9 @@ function appendUserData(videoElement, connection) {
 		nodeCode += "<button class='btn bg_dark_blue game_btn' onclick='mute_user("+u_id+")'>Mute</button>";
 		nodeCode += "<button class='btn bg_dark_blue game_btn' onclick='unmute_user("+u_id+")'>Unmute</button>";
 		nodeCode += "<button class='btn bg_dark_blue game_btn' onclick='talk_access("+u_id+")'>Role</button>";
+		nodeCode += "<p id='user_mute_"+ u_id +"'>Mute: Off</p>";
+		nodeCode += "<p id='user_buzzer_"+ u_id +"'>Buzzer: Off</p>";
+
 		dataNode.innerHTML = nodeCode;
 		videoElement.parentNode.insertBefore(dataNode, videoElement.nextSibling);
 		//addClickListener(videoElement, clientData, serverData);
@@ -346,7 +350,47 @@ function update_scores() {
 	.done(function(data) {
 		for(var i =0; i<data.scores.length;i++) {
 			$("#user_score_"+data.scores[i].user_id).html(data.scores[i].score);
-			console.log("#user_score_"+data.scores[i].user_id + data.scores[i].score);
+			//console.log("#user_score_"+data.scores[i].user_id + data.scores[i].score);
+		}
+	});
+}
+
+function update_states() {
+	// get session from url
+	var url = $(location).attr('href');
+	var parts = url.split("/");
+	if(parts[parts.length-1] == "") {
+		game_session = parts[parts.length-2];
+
+	} else {
+		game_session = parts[parts.length-1];
+	}
+
+	data = {
+		"game_session": game_session,
+	}
+
+	// Get the username
+	$.ajax({
+		type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/api-sessions/get_user_state/', // the url where we want to POST
+		data        : data, // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	})// using the done promise callback
+	.done(function(data) {
+		for(var i =0; i<data.data.length;i++) {
+			if(data.data[i].mute == 0) {
+				$("#user_mute_"+data.data[i].user_id).html("Mute: Off");
+			} else {
+				$("#user_mute_"+data.data[i].user_id).html("Mute: On");
+			}
+
+			if(data.data[i].buzzer == 0) {
+				$("#user_buzzer_"+data.data[i].user_id).html("Buzzer: Off");
+			} else {
+				$("#user_buzzer_"+data.data[i].user_id).html("Buzzer: On");
+			}
 		}
 	});
 }
@@ -415,6 +459,22 @@ function lock_buzzers() {
 	  .catch(error => {
 		  console.error(error);
 	  });
+
+	// Send data to DB
+
+	data = {
+		"game_session": game_session,
+		"buzzer": "0"
+	}
+	console.log(data);
+	// Get the username
+	$.ajax({
+		type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/api-sessions/set_user_state/', // the url where we want to POST
+		data        : data, // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	});
 }
 
 function unlock_buzzers() {
@@ -429,6 +489,22 @@ function unlock_buzzers() {
 	  .catch(error => {
 		  console.error(error);
 	  });
+
+	// Send data to DB
+	data = {
+		"game_session": game_session,
+		"buzzer": "1"
+	}
+	console.log(data);
+	// Get the username
+	$.ajax({
+		type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/api-sessions/set_user_state/', // the url where we want to POST
+		data        : data, // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	});
+
 }
 
 function mute_user(id) {
@@ -443,9 +519,26 @@ function mute_user(id) {
 	  .catch(error => {
 		  console.error(error);
 	  });
+
+	// Send data to DB
+	data = {
+		"game_session": game_session,
+		"mute": "1",
+		"user_id": id
+	}
+	console.log(data);
+	// Get the username
+	$.ajax({
+		type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/api-sessions/set_user_state/', // the url where we want to POST
+		data        : data, // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	});
+
 }
 
-function unmute_user(tp) {
+function unmute_user(id) {
 	session.signal({
 		data: id,  // Any string (optional)
 		to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
@@ -457,6 +550,23 @@ function unmute_user(tp) {
 	  .catch(error => {
 		  console.error(error);
 	  });
+
+	// Send data to DB
+	data = {
+		"game_session": game_session,
+		"mute": "0",
+		"user_id": id
+	}
+	console.log(data);
+	// Get the username
+	$.ajax({
+		type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/api-sessions/set_user_state/', // the url where we want to POST
+		data        : data, // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	});
+
 }
 
 function talk_access(id) {

@@ -33,7 +33,6 @@ class GameSessionsEnrollments extends Migration
 			'score' => [
 				'type' => 'INT',
 				'constraint' => 11,
-				'unsigned' => true,
 				'null' => true,
 			],
 			'rank' => [

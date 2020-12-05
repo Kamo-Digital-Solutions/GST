@@ -59,4 +59,37 @@ class GameModel extends Model
 		
 		return $builder->get()->getResult();
 	}
+
+	public function get_user_state($user_id, $session_id) {
+		$builder = $this->db->table('game_sessions_enrollements');
+		$builder->select('mute, buzzer');
+		$builder->where('game_session_id', $session_id);
+		$builder->where('user_id', $user_id);
+
+		return $builder->get()->getResult();
+	}
+
+	public function get_users_states($session_id) {
+		$builder = $this->db->table('game_sessions_enrollements');
+		$builder->select('user_id, mute, buzzer');
+		$builder->where('game_session_id', $session_id);
+
+		return $builder->get()->getResult();
+	}
+
+
+	public function set_user_state($user_id, $session_id, $field, $data) {
+		$builder = $this->db->table('game_sessions_enrollements');
+
+		$builder->where('game_session_id', $session_id);
+		
+		if($user_id > 0)
+			$builder->where('user_id', $user_id);
+
+		$builder->set($field, $data);
+		$builder->update();
+		
+		return true;
+
+	}
 }

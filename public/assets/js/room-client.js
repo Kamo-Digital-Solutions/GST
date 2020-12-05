@@ -57,6 +57,7 @@ $(function () {
 			get_game_data();
 		});
 	setInterval(function () { update_scores(); }, 3000);
+	//setInterval(function () { update_state(); }, 1500);
 
 });
 
@@ -166,7 +167,7 @@ function joinSession() {
 					};
 					//initMainVideo(event.element, userData);
 					appendUserData(event.element, userData);
-					$(event.element).prop('muted', true); // Mute local video
+					//$(event.element).prop('muted', true); // Mute local video
 				});
 
 				// --- 8) Publish your stream ---
@@ -206,6 +207,40 @@ function joinSession() {
 	});
 
 	return false;
+}
+
+function start_videos() {
+	$("video").trigger('play');
+}
+
+function update_state() {
+	data = {
+		"game_session": game_session,
+		"user_id": userid
+	}
+
+	// Get the username
+	$.ajax({
+		type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/api-sessions/get_user_state/', // the url where we want to POST
+		data        : data, // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	})// using the done promise callback
+	.done(function(data) {
+		if(data.mute == 1 && audioEnabled)
+			mute_me();
+		else if (data.mute == 0 && !audioEnabled)
+			unmute_me();
+
+		if(data.buzzer == 1 && buzzerDisabled)
+			unlock_buzzer();
+		
+		else if (data.buzzer == 0 && !buzzerDisabled)
+			lock_buzzer();
+
+	});
+
 }
 
 function update_game(data) {

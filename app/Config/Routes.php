@@ -37,6 +37,10 @@ $routes->get('/api-sessions/get-token/(:alphanum)', 'ApiSession::get_token/$1');
 $routes->get('/api-sessions/create_tokens/(:num)', 'ApiSession::create_tokens/$1');
 $routes->get('/api-sessions/get_users_score/', 'ApiSession::get_users_score');
 $routes->post('/api-sessions/set_user_score/', 'ApiSession::set_user_score');
+
+$routes->get('/api-sessions/get_user_state/', 'ApiSession::get_user_state');
+$routes->post('/api-sessions/set_user_state/', 'ApiSession::set_user_state');
+
 $routes->post('/api-sessions/set_current_game_data/', 'ApiSession::set_current_game_data');
 $routes->get('/api-sessions/get_current_game_data/', 'ApiSession::get_current_game_data');
 

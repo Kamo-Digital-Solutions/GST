@@ -38,11 +38,7 @@
                     <button class="btn bg_dark_blue game_btn" onclick="unmute_user()">Unmute all</button>
                     <button class="btn bg_dark_blue game_btn" onclick="unlock_buzzers()">Unlock Buzzer</button>
 					<button class="btn bg_dark_blue game_btn" onclick="lock_buzzers()">Lock Buzzer</button>
-					<button class="btn bg_dark_blue game_btn" onclick="update_game_users()">Update</button>
-
-                    <div class="col-md-12 mt-4 width-all">
-                        <button id="showVideo" class="btn bg_dark_blue game_btn">Open camera</button>
-                    </div>
+					<!-- <button class="btn bg_dark_blue game_btn" onclick="update_game_users()">Update</button> -->
 
 					<div class="form-group">
 						<label for="players">Choose a player:</label>

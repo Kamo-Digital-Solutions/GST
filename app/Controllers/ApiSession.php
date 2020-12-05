@@ -95,6 +95,80 @@ class ApiSession extends Controller {
 		
 	}
 
+	// To get Mute and Buzzer states
+	public function get_user_state() {
+		$session = session();
+		$request = \Config\Services::request();
+
+		//Check if he logged in
+		if(!isset($_SESSION['logged_in'])) {
+			return redirect()->to('/auth/signin');
+		}
+
+		$game_session = $request->getGet('game_session');
+		$user_id = $request->getGet('user_id');
+
+		$gameModel = new GameModel();
+		//$user_id = $_SESSION['user_id'];
+
+		if(isset($user_id)) {
+			$data = $gameModel->get_user_state($user_id, $game_session);
+			echo json_encode([
+				'mute' => $data[0]->mute,
+				'buzzer' => $data[0]->buzzer,
+			]);	
+		} else {
+			$data = $gameModel->get_users_states($game_session);
+
+			echo json_encode([
+				'data' => $data,
+			]);	
+
+		}
+
+	}
+
+	// To set Mute and Buzzer states
+	public function set_user_state() {
+		$session = session();
+		$request = \Config\Services::request();
+
+		//Check if he logged in and he is the host
+		if(!isset($_SESSION['logged_in']) || !$this->checkHost()) {
+			return redirect()->to('/auth/signin');
+		}
+
+		$game_session = $request->getPost('game_session');
+		$user_id = $request->getPost('user_id');
+		$mute = $request->getPost('mute');
+		$buzzer = $request->getPost('buzzer');
+
+		$gameModel = new GameModel();
+		if(!isset($user_id) || $user_id <= 0)
+			$user_id = -1;
+		if(isset($mute))
+			$data = $gameModel->set_user_state($user_id, $game_session, 'mute', $mute);
+
+		if(isset($buzzer))
+			$data = $gameModel->set_user_state($user_id, $game_session, 'buzzer', $buzzer);
+
+		return true;
+	}
+
+
+	public function checkHost() {
+		$session = session();
+
+		$adminRoomModel = new AdminRoomModel();
+        $query = $adminRoomModel->is_host($_SESSION['user_id']);
+		if(count($query) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
 	public function get_users_score() {
 		$session = session();
 		$request = \Config\Services::request();
