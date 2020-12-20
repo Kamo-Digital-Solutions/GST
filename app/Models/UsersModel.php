@@ -17,9 +17,9 @@ class UsersModel extends Model
 	public function get_where($data) {
 		$builder = $this->db->table('users');
 		foreach($data as $key => $value) {
-			$query = $builder->where([$key => $value]);
+			$builder->where([$key => $value]);
 		}
-		return $query->get()->getResult();
+		return $builder->get()->getResult();
 	}
 
 

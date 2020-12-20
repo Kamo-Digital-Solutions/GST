@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeopardy</title>
+    <title>Family Feud</title>
 
     <!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,6 +17,9 @@
     <!-- User View CSS -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/game-view.css'); ?>">
 
+    <!-- Family Feud Game View CSS -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/games/family-feud.css'); ?>">
+
     <!-- Roboto Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"> 
 </head>
@@ -25,7 +28,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="text-center logo">
-					<img src="<?php echo base_url('assets/images/logo.png'); ?>" alt="">
+                    <img src="<?php echo base_url('assets/images/logo.png'); ?>" alt="">
                 </div>
 				<div id="successMsg">
 				</div>
@@ -65,6 +68,26 @@
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('sub')">Subtract</button>
     
 					<button class="btn btn-primary" onclick="send_score();">Send Msg</button>
+
+					<div class="form-group">
+						<label for="scores" class="mt-4">Choose teams:</label>
+
+                        <div class="mb-4">
+                            <select name="teams-1" id="team-1">
+
+                            </select>
+
+                            <select name="teams-2" id="team-2">
+
+                            </select>
+
+                        </div>
+
+                        <button class="btn bg_dark_blue game_btn" onclick="playing_teams()">Change</button>
+
+					</div>
+
+
 					<!-- For OpenVidu -->
 					<div id="session">
 						<div id="video-container" class="col-md-6 width-all" style="max-width: 100%;"></div>
@@ -80,34 +103,48 @@
 						<!-- OpenVidu Main Video -->
 						<div id="main-video" class="col-md-6 text-center">
 						</div>
-						
-						<div style="display: flex; justify-content: center;">
-							<div class="answer_timer">
-								5.00
-							</div>
-						</div>
 
-						<div style="display: flex; justify-content: center;">
-							<div>
-								<button class="btn bg_dark_blue game_btn mb-3" onclick="countdown_question()">Start Buzzing</button>
-							</div>
-						</div>
-						
 						<div id="main_game">
-							<div class="jeopardy">
-								<div class="jeopardy_boxes">
+                            <div id="actual_score" class="text-center">
+                                0
+                            </div>
 
-								</div>
+                            <div id="question_family">
+                                
+                            </div>
+                            
+                            <div id="answers_dashboard">
+                                <div class="row">
+                                    <div class="col-md-6 p-0" id="answers_dashboard_1">
+                                    </div>
 
-								<div class="jeopardy_question">
+                                    <div class="col-md-6 p-0" id="answers_dashboard_2">
+                                    </div>
+                                </div>
+                            </div>
 
-								</div>
-
-								<div class="jeopardy_answer">
-									
-								</div>
-							</div>
 						</div>
+
+                        <div id="game_control">
+                            <button class="btn bg_dark_blue game_btn" onclick="award_team(0)">Award Team 1</button>
+                            <button class="btn bg_dark_blue game_btn" onclick="next_question()">New Question</button>
+                            <button class="btn bg_dark_blue game_btn" onclick="award_team(1)">Award Team 2</button>
+
+                            <div>
+                                <p>
+                                    Team 1: <span id="team1_score">0</span>
+                                </p>
+                                <p>
+                                    Team 2: <span id="team2_score">0</span>
+                                </p>
+                            </div>
+
+                            <div id="solutions">
+                                <ol>
+
+                                </ol>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -120,8 +157,7 @@
 	<script src="<?php echo base_url('assets/js/html2canvas.min.js'); ?>"></script>	
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
 	<script src="<?php echo base_url('assets/js/room-admin.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/js/game-view.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/js/admin-jeopardy-view.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/Family-Feud/family-feud-admin-view.js'); ?>"></script>
 
 </body>
 </html>

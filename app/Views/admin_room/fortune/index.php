@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="text-center logo">
-                    <img src="assets/images/logo.png" alt="">
+                    <img src="<?php echo base_url('assets/images/logo.png'); ?>" alt="">
                 </div>
 
                 <!-- Mute Block -->
@@ -59,7 +59,12 @@
 
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('add')">Add</button>
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('sub')">Subtract</button>
-    
+                    <button class="btn bg_dark_blue game_btn" onclick="set_spin_access()">Spin Access</button>
+                    <button class="btn bg_dark_blue game_btn" onclick="remove_spin_access()">Remove Spin Access</button>
+                    
+                    <p id="spin_access">
+                        Spin Access: 
+                    </p>
 					<!-- For OpenVidu -->
 					<div id="session">
 						<div id="video-container" class="col-md-6 width-all" style="max-width: 100%;"></div>

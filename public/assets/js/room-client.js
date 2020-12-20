@@ -57,7 +57,6 @@ $(function () {
 			get_game_data();
 		});
 	setInterval(function () { update_scores(); }, 3000);
-	//setInterval(function () { update_state(); }, 1500);
 
 });
 
@@ -194,11 +193,13 @@ function joinSession() {
 					unmute_me();
 				}
 			} else if (event.type == "signal:role") {
-				if (event.data == userid) {
+				if (event.data == userid || event.data == nickName) {
 					startBuzzer();
 				}
 			} else if (event.type == "signal:game-status") {
 				update_game(event.data);
+			} else if (event.type == "signal:countdown") {
+				start_countdown();
 			}
 			//console.log(event.data); // Message
 			//console.log(event.from); // Connection object of the sender
@@ -209,8 +210,36 @@ function joinSession() {
 	return false;
 }
 
+function start_countdown() {
+	timer = 5;
+	var x = setInterval(function () {
+		$(".answer_timer").html(timer.toFixed(2));
+		timer-= 0.01;
+		if (timer < 0) {
+			clearInterval(x);
+			$(".answer_timer").html("5.00");
+		}
+	}, 10);
+}
+
+
 function start_videos() {
 	$("video").trigger('play');
+}
+
+function send_spin() {
+	session.signal({
+		data: userid,  // Any string (optional)
+		to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+		type: 'spin'             // The type of message (optional)
+	})
+	.then(() => {
+		console.log('Message successfully sent');
+	})
+	.catch(error => {
+		console.error(error);
+	});
+
 }
 
 function update_state() {
@@ -243,11 +272,7 @@ function update_state() {
 
 }
 
-function update_game(data) {
-	$("#game-dashboard").empty();
-	$("#game-dashboard").append(data);
-	console.log("Updated");
-}
+
 
 function getToken(callback) {
 	var url = $(location).attr('href');
@@ -341,12 +366,16 @@ function appendUserData(videoElement, connection) {
 }
 
 function initMainVideo(videoElement, userData) {
-	//$('#main-video video').get(0).srcObject = videoElement.srcObject;
-	//console.log(videoElement);
-	//$('#main-video video').prop('muted', true);
 	$('#main-video').get(0).append(videoElement);
 	$('#main-video').width(400);
 	update_scores();
+}
+
+function cleanMainVideo() {
+	$('#main-video video').get(0).srcObject = null;
+	$('#main-video p').each(function () {
+		$(this).html('');
+	});
 }
 
 function update_scores() {
@@ -390,6 +419,8 @@ $("#buzzer").click(function () {
 });
 
 function startBuzzer() {
+	$("#successMsg").append("<div class='alert alert-success' id='successMsgData' role='alert'>You have the floor.</div>");
+	unmute_me();
 	timer = 5;
 	var x = setInterval(function () {
 		$("#timer").html(timer);
@@ -397,6 +428,9 @@ function startBuzzer() {
 		if (timer < 0) {
 			clearInterval(x);
 			$("#buzzer").prop('disabled', false);
+			$("#successMsgData").remove();
+			$("#timer").html(5.0);
+			mute_me();
 		}
 	}, 1000);
 }

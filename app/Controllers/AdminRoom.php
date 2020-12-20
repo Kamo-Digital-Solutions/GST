@@ -19,9 +19,19 @@ class AdminRoom extends Controller {
 				return view('admin_room/fortune/index');
 			else if ($data[0]->game_id == 1) {
 				return view('admin_room/index');
+			} else if($data[0]->game_id == 4) {
+				return view('admin_room/family_feud/index');
 			} else {
 				return redirect()->to('/');
 			}
+		} else {
+			return redirect()->to('/');
+		}
+	}
+
+	public function teams ($id) {
+		if($this->checkHost()) {
+			return view('admin_room/teams');
 		} else {
 			return redirect()->to('/');
 		}

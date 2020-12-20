@@ -20,6 +20,8 @@ class Room extends Controller {
 				return view('room/fortune/index');
 			} else if ($data[0]->game_id == 1) {
 				return view('room/index');
+			} else if($data[0]->game_id == 4) {
+				return view('room/family_feud/index');
 			} else {
 				return redirect()->to('/auth/signin');
 			}

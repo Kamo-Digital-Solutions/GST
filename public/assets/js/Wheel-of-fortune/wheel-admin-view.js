@@ -1,5 +1,9 @@
+function setCharAt(str,index,chr) {
+    if(index > str.length-1) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
+}
+
 Array.prototype.randomize = function () {
-  //fisher yates from http://codereview.stackexchange.com/a/12200/3163
   var i = this.length;
   if (i === 0) return false;
   while (--i) {
@@ -38,26 +42,43 @@ var WordDisplay = (function () {
       characters;
 
   function WordDisplay(puzzle) {
-      characters = [];
-      while (display.hasChildNodes()) { //remove old puzzle
-          display.removeChild(display.firstChild);
-      }
-      var word = div(display, 'word');
-      for (var i = 0; i < puzzle.length; ++i) {
-          if (puzzle[i] == ' ') {
-              characters.push(div(display, 'space'));
-              word = div(display, 'word');
-          } else {
-              characters.push(div(word, 'letter'));
-              
-          }
-          console.log(i, puzzle[i], word.children, characters.length);
-      }
-      div(display, 'clear');
+
+    console.log("THE PUZZLE = " + puzzle);  
+    current_state = "";
+    
+    // add puzzle to current_state
+    for(var i = 0; i<puzzle.length; i++) {
+        if(puzzle[i] != " ") {
+            current_state += "*";
+        } else {
+            current_state += puzzle[i];
+        }
+    }
+
+    characters = [];
+    while (display.hasChildNodes()) { //remove old puzzle
+        display.removeChild(display.firstChild);
+    }
+    var word = div(display, 'word');
+    for (var i = 0; i < puzzle.length; ++i) {
+        if (puzzle[i] == ' ') {
+            characters.push(div(display, 'space'));
+            word = div(display, 'word');
+        } else {
+            characters.push(div(word, 'letter'));
+            
+        }
+        console.log(i, puzzle[i], word.children, characters.length);
+    }
+    div(display, 'clear');
   }
+
   WordDisplay.prototype.showLetter = function (i, letter) {
-      characters[i].innerHTML = letter;
-      update_game_users(); // from room-admin.js
+    characters[i].innerHTML = letter;
+        
+    current_state = setCharAt(current_state,i,letter);
+
+    update_game_users(); // from room-admin.js
   };
   return WordDisplay;
 })();
@@ -107,6 +128,7 @@ var Wheel = (function () {
       if (amount === undefined) {
           amount = parseInt(wheel.getAttribute('data-rotation'), 10);
       }
+      data_state = amount;
       update_game_users(); // from room-admin.js
       /////////////////
       this.rotate(amount);

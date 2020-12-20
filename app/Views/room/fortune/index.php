@@ -83,6 +83,8 @@
                                 <div class="row">
                                     <div class="col-md-12" style="display: flex; justify-content: center;">
                                         <button class="btn bg_dark_blue game_btn" onclick="start_videos()">Start videos</button>
+                                        <button class="btn bg_dark_blue game_btn" onclick="send_spin()">Spin the wheel</button>
+
                                     </div>
 
                                     <div class="col-md-12" style="display: flex; justify-content: center;">
@@ -98,7 +100,12 @@
                                 <div class="row">
                                     <div class="col-md-12" style="display: flex; justify-content: center;">
 										<div id="game-dashboard">
-
+                                            <div id="game">
+                                                <div id="display"></div>
+                                                <div class="clear"></div>
+                                                <div id="tick">⇩</div>
+                                                <img id="wheel" src="http://i.imgur.com/R7JYazp.png" data-rotation="0" />
+                                            </div>
 										</div>
                                     </div>
                                 </div>
@@ -150,8 +157,7 @@
 	<!-- Openvidu Integration -->
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
 	<script src="<?php echo base_url("assets/js/room-client.js");?>"></script>
-
-    <script src="<?php echo base_url('assets/js/game-view.js'); ?>"></script>
+	<script src="<?php echo base_url("assets/js/Wheel-of-fortune/wheel-game-view.js");?>"></script>
 	
 
 </body>

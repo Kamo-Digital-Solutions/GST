@@ -52,6 +52,40 @@ class GameModel extends Model
 		return $builder->get()->getResult();
 	}
 
+	public function get_teams_name($session_id) {
+		$builder = $this->db->table('game_sessions_enrollements');
+		$builder->join('teams', 'teams.id = game_sessions_enrollements.team_id');
+		$builder->select('team_id, team_name');
+		$builder->orderBy('team_id', 'ASC');
+		$builder->distinct();
+		$builder->where('game_session_id', $session_id);
+
+		return $builder->get()->getResult();
+	}
+
+	public function update_user_team($game_session, $user_id, $team_id) {
+		
+		$builder = $this->db->table('game_sessions_enrollements');
+
+		$builder->where('game_session_id', $game_session);
+		$builder->where('user_id', $user_id);
+
+		$builder->set("team_id", $team_id);
+		$builder->update();
+		
+		return true;
+	}
+
+	public function get_users_teams($session_id) {
+		$builder = $this->db->table('game_sessions_enrollements');
+		$builder->join('users', 'users.id = game_sessions_enrollements.user_id');
+		$builder->join('teams', 'teams.id = game_sessions_enrollements.team_id');
+		$builder->where('game_session_id', $session_id);
+
+		return $builder->get()->getResult();
+	}
+
+
 	public function get_user_team_id($user_id, $session_id) {
 		$builder = $this->db->table('game_sessions_enrollements');
 		$builder->where('game_session_id', $session_id);

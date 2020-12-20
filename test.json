@@ -1,0 +1,34 @@
+// Jeopardy State
+
+{
+    "current_state" : "table | question | answer",
+    "data_state": "the question, the answer",
+    "game_dashboard" : ["Pop Cuture", "Jesus' Birth", "Christmas Carols", "History Tekks Us"],
+}
+
+
+// Wheel of forune
+
+{
+    "current_state" : "H**he*",
+    "data_state": ,
+}
+
+
+// Family Feud
+
+{
+    "current_state" : "Quesiton chdbdsvbhcdfvhd ?",
+    "data_state" : {
+        "1" : 120,
+        "2" : 200,
+        "3" : 0,
+    },
+    "game_dashboard" : {
+        "1" : [],
+        "2" : ["Food", 63]
+    },
+    "current_teams" : [0, 6]
+}
+//dashboard_array
+// g_d

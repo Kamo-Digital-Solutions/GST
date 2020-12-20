@@ -41,12 +41,20 @@ $routes->post('/api-sessions/set_user_score/', 'ApiSession::set_user_score');
 $routes->get('/api-sessions/get_user_state/', 'ApiSession::get_user_state');
 $routes->post('/api-sessions/set_user_state/', 'ApiSession::set_user_state');
 
-$routes->post('/api-sessions/set_current_game_data/', 'ApiSession::set_current_game_data');
 $routes->get('/api-sessions/get_current_game_data/', 'ApiSession::get_current_game_data');
+$routes->post('/api-sessions/set_current_game_data/', 'ApiSession::set_current_game_data');
+
+
+$routes->get('/api-sessions/get_teams_data/', 'ApiSession::get_teams_data');
+
+$routes->get('/api-sessions/get_teams_name/', 'ApiSession::get_teams_name');
+$routes->post('/api-sessions/update_user_team/', 'ApiSession::update_user_team');
 
 
 // Admin Routes
 $routes->get('/admin/room/(:num)', 'AdminRoom::index/$1');
+$routes->get('/admin/teams/(:num)', 'AdminRoom::teams/$1');
+
 $routes->get('/adminroom/ishost/', 'AdminRoom::isHost');
 $routes->post('/adminroom/get_game_session_data/', 'AdminRoom::get_game_session_data');
 

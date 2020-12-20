@@ -241,9 +241,8 @@ class ApiSession extends Controller {
 		$gameDataModel = new GameDataModel();
 
 		$current_data = $gameDataModel->set_current_data($game_session, $_SESSION['user_id'], $game_data);
-		//$current_data = $gameDataModel->set_current_data(1, 2, "<h1>Hichem</h1>");
 
-		var_dump($current_data);
+		//var_dump($current_data);
 		return true;
 	}
 
@@ -267,6 +266,66 @@ class ApiSession extends Controller {
 		]);
 		
 		return true;
+	}
 
+	public function get_teams_data() {
+		$session = session();
+		$request = \Config\Services::request();
+
+		//Check if he logged in
+		if(!isset($_SESSION['logged_in']) || !$this->checkHost()) {
+			return redirect()->to('/auth/signin');
+		}
+
+		$game_session = $request->getGet('game_session');
+
+		$gameModel = new GameModel();
+
+		$data = $gameModel->get_users_teams($game_session);
+
+		echo json_encode([
+			'data' => $data,
+		]);
+	}
+
+	public function get_teams_name() {
+		$session = session();
+		$request = \Config\Services::request();
+
+		//Check if he logged in
+		if(!isset($_SESSION['logged_in']) || !$this->checkHost()) {
+			return redirect()->to('/auth/signin');
+		}
+
+		$game_session = $request->getGet('game_session');
+
+		$gameModel = new GameModel();
+
+		$data = $gameModel->get_teams_name($game_session);
+
+		echo json_encode([
+			'data' => $data,
+		]);
+
+	}
+
+	public function update_user_team() {
+		$session = session();
+		$request = \Config\Services::request();
+
+		//Check if he logged in
+		if(!isset($_SESSION['logged_in']) || !$this->checkHost()) {
+			return redirect()->to('/auth/signin');
+		}
+
+		$game_session = $request->getPost('game_session');
+		$user_id = $request->getPost('user_id');
+		$team_id = $request->getPost('team_id');
+				
+		$gameModel = new GameModel();
+
+		$data = $gameModel->update_user_team($game_session, $user_id, $team_id);
+
+		return true;
 	}
 }

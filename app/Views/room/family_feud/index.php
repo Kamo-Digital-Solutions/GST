@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeopardy</title>
+    <title>Family Feud</title>
 
     <!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -16,6 +16,9 @@
 
     <!-- User View CSS -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/game-view.css'); ?>">
+
+    <!-- Family Feud Game View CSS -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/games/family-feud.css'); ?>">
 
     <!-- Roboto Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"> 
@@ -39,6 +42,9 @@
                         <div class="col-md-12 width-all">
                             <div class="text-center teamName text-uppercase">
                                 Team 1
+                            </div>
+                            <div class="text-center teamName text-uppercase" id="team1_score">
+                                0
                             </div>
                         </div>
 
@@ -96,24 +102,22 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12" style="display: flex; justify-content: center;">
-                                            <div class="answer_timer">
-                                                5.00
-                                            </div>
-                                        </div>
-
-                                    <div class="col-md-12" style="display: flex; justify-content: center;">
 										<div id="game-dashboard">
-                                            <div class="jeopardy">
-                                                <div class="jeopardy_boxes">
+                                            <div id="actual_score" class="text-center">
+                                                0
+                                            </div>
 
-                                                </div>
+                                            <div id="question_family">
+                                                
+                                            </div>
+                                            
+                                            <div id="answers_dashboard">
+                                                <div class="row">
+                                                    <div class="col-md-6 p-0" id="answers_dashboard_1">
+                                                    </div>
 
-                                                <div class="jeopardy_question">
-
-                                                </div>
-
-                                                <div class="jeopardy_answer">
-                                                    
+                                                    <div class="col-md-6 p-0" id="answers_dashboard_2">
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -126,7 +130,7 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12 text-center">
-										<p>Reply Timer: <span id="timer">5.0</span></p>
+										<p>Timer: <span id="timer">5.0</span></p>
 
                                         <button class="btn bg_dark_blue game_btn text-uppercase">Game Rules</button>
             
@@ -149,6 +153,10 @@
                             <div class="text-center teamName text-uppercase">
                                 Team 2
                             </div>
+                            <div class="text-center teamName text-uppercase"  id="team2_score">
+                                0
+                            </div>
+
                         </div>
 
                         <!-- Screens -->
@@ -168,7 +176,7 @@
 	<!-- Openvidu Integration -->
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
 	<script src="<?php echo base_url("assets/js/room-client.js");?>"></script>
-    <script src="<?php echo base_url('assets/js/game-view.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/Family-Feud/family-feud-game-view.js'); ?>"></script>
 	
 
 </body>

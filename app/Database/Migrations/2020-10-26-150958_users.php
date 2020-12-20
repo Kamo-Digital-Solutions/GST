@@ -41,11 +41,6 @@ class Users extends Migration
 				'type' => 'VARCHAR',
 				'constraint' => 50,
 			],
-			'team_id' => [
-				'type' => 'VARCHAR',
-				'constraint' => 50,
-				'null' => true,
-			],
 			'picture' => [
 				'type' => 'VARCHAR',
 				'constraint' => 50,

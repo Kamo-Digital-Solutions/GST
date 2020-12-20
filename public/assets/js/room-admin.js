@@ -5,13 +5,22 @@ var OV_game_dashboard;
 var session_game_dashboard;
 var publisher;
 var publisher2;
-
 var sessionName;	// Name of the video session the user will connect to
 var token;			// Token retrieved from OpenVidu Server
 
 var nickName = "";
 var game_session = "";
 var userid = "";
+var clicked_buzzers = [];
+
+// Data to save and send to users
+var dashboard_array = [];
+var current_state = "table";
+var data_state = "";
+var current_teams = [];
+
+// Wheel of fortune variable:
+var spin_access;
 
 function get_session_id() {
 	var url = $(location).attr('href');
@@ -47,7 +56,6 @@ $(function() {
 	});
 	setInterval(function(){ update_scores(); }, 3000);
 	setInterval(function(){ update_states(); }, 1500);
-
 });
 
 /* OPENVIDU METHODS */
@@ -148,7 +156,9 @@ function joinSession() {
 		////"signal:buzzer"
 		session.on('signal', (event) => {
 			if(event.type == "signal:buzzer") {
-				$("#events_log").append("\n"+event.data + " hit buzzer");
+				add_buzz(event.data);
+			} else if (event.type == "signal:spin") {
+				user_spin(event.data);
 			}
 		});
 	});
@@ -156,41 +166,84 @@ function joinSession() {
 	return false;
 }
 
+// Jeopardy functions
+
+function add_buzz(buzzer_id) {
+	$("#events_log").append("\n"+ buzzer_id + " hit buzzer");
+	clicked_buzzers.push(buzzer_id);
+}
+
+function open_floor_first_user() {
+	if(clicked_buzzers.length) {
+		talk_access(clicked_buzzers[0]);
+		$("#successMsg").append("<div class='alert alert-success' id='successMsgData' role='alert'>"+ clicked_buzzers[0] +" has the floor.</div>");
+		setTimeout(function() { $("#successMsgData").remove();}, 5000);
+		//console.log(clicked_buzzers[0] + " has the floor");
+		clicked_buzzers = [];	
+	} else {
+		$("#successMsg").append("<div class='alert alert-danger' id='successMsgData' role='alert'>No one has the floor.</div>");
+	}
+}
+
+// End of Jeopardy functions
+
+// Spin access functions
+function user_spin(user_spin_id) {
+	if(user_spin_id == spin_access) {
+		$("#spin").click();
+	}
+}
+
+function set_spin_access() {
+	spin_access = $("#players").children("option:selected").attr("user_id");
+	access_user_name = $("#players option[user_id='"+ spin_access +"']").text();
+	$("#spin_access").html("Spin Access: " + access_user_name);
+}
+
+function remove_spin_access() {
+	spin_access = -1;
+	$("#spin_access").html("Spin Access: ");
+}
+
+// End of spin access functions
+
 // Update the game for the users
 function update_game_users() {
-	var gameData = document.getElementById("main_game").innerHTML;
-	//console.log(gameData);
 
+	s_id = get_session_id();
+	
+	gd = {
+		"current_state": current_state,
+		"data_state" : data_state,
+		"game_dashboard": dashboard_array,
+		"current_teams": current_teams,
+	}
+
+	data = {
+		"game_session": s_id,
+		"game_data" : JSON.stringify(gd)
+	}
+
+	// Set current game data
+	$.ajax({
+		type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+		url: '/api-sessions/set_current_game_data/', // the url where we want to POST
+		data: data, // our data object
+		dataType: 'json', // what type of data do we expect back from the server
+		encode: true
+	});
+	
 	session.signal({
-		data: gameData,  // Any string (optional)
+		data: JSON.stringify(gd),  // Any string (optional)
 		to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
 		type: 'game-status'             // The type of message (optional)
-	  })
-	  .then(() => {
-		  console.log('Message successfully sent');
-	  })
-	  .catch(error => {
-		  console.error(error);
-	  });
-
-
-	  s_id = get_session_id();
-
-	  data = {
-		  "game_session": s_id,
-		  "game_data" : gameData
-	  }
-	  // Get the username
-	  $.ajax({
-		  type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-		  url: '/api-sessions/set_current_game_data/', // the url where we want to POST
-		  data: data, // our data object
-		  dataType: 'json', // what type of data do we expect back from the server
-		  encode: true
-	  })// using the done promise callback
-	.done(function (data) {
-		// Nothing to do
-	}); 
+	})
+	.then(() => {
+		console.log('Message successfully sent');
+	})
+	.catch(error => {
+		console.error(error);
+	});	
 }
 
 function leaveSession() {
@@ -240,6 +293,12 @@ function removeUserData(connection) {
 	$("#data-" + connection.connectionId).remove();
 }
 
+function cleanMainVideo() {
+	$('#main-video video').get(0).srcObject = null;
+	$('#main-video p').each(function () {
+		$(this).html('');
+	});
+}
 function httpPostRequest(url, body, errorMsg, callback) {
 	var http = new XMLHttpRequest();
 	http.open('GET', url, true);
@@ -281,13 +340,15 @@ function appendUserData(videoElement, connection) {
 			serverData = JSON.parse(connection.data.split('%/%')[1]).serverData;
 			u_id = JSON.parse(connection.data.split('%/%')[0]).u_id;
 			nodeId = connection.connectionId;
+			team_id = JSON.parse(connection.data.split('%/%')[0]).team_id;
+			console.log("Team ID " + team_id);
 		}
 
 		var dataNode = document.createElement('div');
 		dataNode.className = "data-node";
 		dataNode.id = "data-" + nodeId;
 		nodeCode = "";
-		nodeCode += "<p class='nickName'>" + clientData + "</p><p class='userName' id='user_score_"+ u_id +"'>" + serverData + "</p><br>";
+		nodeCode += "<p class='nickName'>" + clientData + " - Team " + team_id + "</p><p class='userName' id='user_score_"+ u_id +"'>" + serverData + "</p><br>";
 		nodeCode += "<button class='btn bg_dark_blue game_btn' onclick='mute_user("+u_id+")'>Mute</button>";
 		nodeCode += "<button class='btn bg_dark_blue game_btn' onclick='unmute_user("+u_id+")'>Unmute</button>";
 		nodeCode += "<button class='btn bg_dark_blue game_btn' onclick='talk_access("+u_id+")'>Role</button>";
@@ -582,5 +643,34 @@ function talk_access(id) {
 	  .catch(error => {
 		  console.error(error);
 	  });
+}
 
+function strat_countdown() {
+	session.signal({
+		data: '',  // No data
+		to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+		type: 'countdown'             // The type of message (optional)
+	  })
+	  .then(() => {
+		  console.log('Start Counting: Message successfully sent');
+	  })
+	  .catch(error => {
+		  console.error(error);
+	  });
+}
+
+function countdown_question() {
+	timer = 5;
+	strat_countdown();
+	unlock_buzzers();
+	var x = setInterval(function () {
+		$(".answer_timer").html(timer.toFixed(2));
+		timer-= 0.01;
+		if (timer < 0) {
+			clearInterval(x);
+			$(".answer_timer").html("5.00");
+			lock_buzzers();
+			open_floor_first_user();
+		}
+	}, 10);
 }
