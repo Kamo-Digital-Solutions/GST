@@ -18,7 +18,7 @@ class AdminRoom extends Controller {
 			if($data[0]->game_id == 3)
 				return view('admin_room/fortune/index');
 			else if ($data[0]->game_id == 1) {
-				return view('admin_room/index');
+				return view('admin_room/jeopardy/index');
 			} else if($data[0]->game_id == 4) {
 				return view('admin_room/family_feud/index');
 			} else {

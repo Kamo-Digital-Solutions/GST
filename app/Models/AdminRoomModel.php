@@ -44,6 +44,4 @@ class AdminRoomModel extends Model
 		
 		return true;
 	}
-
-
 }

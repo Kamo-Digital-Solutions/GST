@@ -2,14 +2,9 @@ var game_data = "";
 var question_id = -1;
 var actual_score = 0;
 var g_d = {};
-var teams = [];
-var teams_ids = [];
 
 $(function() {
 	get_game_data();
-	get_teams();
-
-	//update_game_users(); // from room-admin.js
 });
 
 function get_session_id() {
@@ -25,46 +20,6 @@ function get_session_id() {
 	return last_part;
 }
 
-function init_teams() {
-	for(var i = 0; i<teams.length; i++) {
-		$("#team-1").append("<option value='"+ teams_ids[i] +"' selected>" + teams[i] + "</option>");
-		$("#team-2").append("<option value='"+ teams_ids[i] +"' selected>" + teams[i] + "</option>");
-	}
-
-}
-
-function playing_teams() {
-	t1 = document.getElementById("team-1").value;
-	t2 = document.getElementById("team-2").value;
-	current_teams = [t1, t2];
-
-	update_game_users(); // from room-admin.js
-	$("#team1_score").html(data_state[t1]);
-	$("#team2_score").html(data_state[t2]);
-}
-
-function get_teams() {
-
-	data = {
-		"game_session": get_session_id(),
-	}
-
-	// Get the username
-	$.ajax({
-		type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
-		url         : '/api-sessions/get_teams_name/', // the url where we want to POST
-		data        : data, // our data object
-		dataType    : 'json', // what type of data do we expect back from the server
-		encode          : true
-	})// using the done promise callback
-	.done(function(data) {
-		for(var i =0; i<data.data.length;i++) {
-			teams.push(data.data[i].team_name);
-			teams_ids.push(data.data[i].team_id);
-		}
-		init_teams();
-	});
-}
 
 function show_answer(id) {
 	answer = Object.values(game_data)[question_id][id][0];
@@ -85,7 +40,7 @@ function show_answer(id) {
 function award_team(team_id) {
 
 	data_state[current_teams[team_id]] += actual_score;
-
+	console.log("TEST: ", data_state);
 	update_game_users(); // from room-admin.js
 	$("#team" + (team_id+1) + "_score").html(data_state[current_teams[team_id]]);
 }
@@ -143,11 +98,13 @@ function next_question() {
 	}
 
 	dashboard_array = JSON.stringify(g_d);
-	update_game_users(); // from room-admin.js
+	//update_game_users(); // from room-admin.js
 }
 
 function get_game_data() {
 
+
+	// Getting current game data
 	dataSend = {
 		"game_session": get_session_id(),
 	}
@@ -159,25 +116,28 @@ function get_game_data() {
 		dataType: 'json', // what type of data do we expect back from the server
 		encode: true
 	})// using the done promise callback
-		.done(function (data) {
-			if(data.code) {
-				// Must get Current state or init one
-				current_teams = JSON.parse(data.code).current_teams;
-				
-				data_state = JSON.parse(data.code).data_state;
-			} else {
-				// Hardcoded
-				current_teams = [1, 2];
-				// End of Hardcoded
-				data_state = {};
-				data_state[current_teams[0]] = 0;
-				data_state[current_teams[1]] = 0;
-			}
+	.done(function (data) {
+		// Get Current state or init one
+		
+		if(data.code) {
+			current_teams = JSON.parse(data.code).current_teams;
+			
+			data_state = JSON.parse(data.code).data_state;
+		} else {
+			// Hardcoded
+			current_teams = [1, 2];
+			// End of Hardcoded
+			data_state = {};
+			data_state[current_teams[0]] = 0;
+			data_state[current_teams[1]] = 0;
+		}
 
-			$("#team" + current_teams[0] + "_score").html(data_state[current_teams[0]]);
-			$("#team" + current_teams[1] + "_score").html(data_state[current_teams[1]]);
-		});
-	
+		$("#team" + current_teams[0] + "_score").html(data_state[current_teams[0]]);
+		$("#team" + current_teams[1] + "_score").html(data_state[current_teams[1]]);
+	});
+
+	////// Getting Game data: Question ... 
+
 	var formData = {
 		'game_session_id': get_session_id()
 	};
@@ -194,5 +154,5 @@ function get_game_data() {
 		game_data = JSON.parse(data.result[0].data);
 		question_id = -1;
 		next_question();
-    });
+	});
 }

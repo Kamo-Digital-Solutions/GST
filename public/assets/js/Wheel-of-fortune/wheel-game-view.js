@@ -8,6 +8,15 @@ function div(parent, className) {
 
 
 function update_game(data) {
+
+    current_teams = JSON.parse(data).current_teams;
+	// Get team id
+	if ((team_id == current_teams[0] || team_id == current_teams[1]) && !published) {
+		republishing_session();
+	} else if ((team_id != current_teams[0] && team_id != current_teams[1]) && published) {
+		stop_publishing();
+	}
+
     var display = document.getElementById('display'),
       characters;
 

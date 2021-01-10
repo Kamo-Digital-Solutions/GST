@@ -61,7 +61,25 @@
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('sub')">Subtract</button>
                     <button class="btn bg_dark_blue game_btn" onclick="set_spin_access()">Spin Access</button>
                     <button class="btn bg_dark_blue game_btn" onclick="remove_spin_access()">Remove Spin Access</button>
-                    
+                    <div class="form-group">
+						<label for="scores" class="mt-4">Choose teams:</label>
+
+                        <div class="mb-4">
+                            <select name="teams-1" id="team-1">
+
+                            </select>
+
+                            <select name="teams-2" id="team-2">
+
+                            </select>
+
+                        </div>
+
+                        <button class="btn bg_dark_blue game_btn" onclick="playing_teams()">Change</button>
+
+					</div>
+
+
                     <p id="spin_access">
                         Spin Access: 
                     </p>
@@ -108,7 +126,6 @@
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="https://unpkg.com/konva@7.2.0/konva.min.js"></script>
 
-	<script src="<?php echo base_url('assets/js/html2canvas.min.js'); ?>"></script>	
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
 	<script src="<?php echo base_url('assets/js/room-admin.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/js/Wheel-of-fortune/wheel-admin-view.js'); ?>"></script>

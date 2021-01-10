@@ -168,7 +168,7 @@
 	<!-- Openvidu Integration -->
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
 	<script src="<?php echo base_url("assets/js/room-client.js");?>"></script>
-    <script src="<?php echo base_url('assets/js/game-view.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/Jeopardy/jeopardy-game-view.js'); ?>"></script>
 	
 
 </body>

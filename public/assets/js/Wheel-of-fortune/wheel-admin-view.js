@@ -1,7 +1,23 @@
+var game_data;
+
 function setCharAt(str,index,chr) {
     if(index > str.length-1) return str;
     return str.substring(0,index) + chr + str.substring(index+1);
 }
+
+function get_session_id() {
+	var url = $(location).attr('href');
+	var parts = url.split("/");
+	if (parts[parts.length - 1] == "") {
+		var last_part = parts[parts.length - 2];
+
+	} else {
+		var last_part = parts[parts.length - 1];
+	}
+
+	return last_part;
+}
+
 
 Array.prototype.randomize = function () {
   var i = this.length;
@@ -320,6 +336,9 @@ var WheelGame = (function () {
       } else {
           alert("No more puzzles!");
       }
+
+      update_game_users(); // from room-admin.js
+
   };
 
   WheelGame.prototype.startRound = function (round) {
@@ -341,7 +360,27 @@ var WheelGame = (function () {
   return WheelGame;
 })();
 
-var Game = new WheelGame([
-  "doctor who", "the dark knight rises", "wheel of fortune",
-  "facebook", "twitter", "google plus", "sea world", "pastrami on rye",
-  "i am sparta", "whose line is it anyway", "google chrome"]);
+////// Main //////
+
+
+// Get Game data: Wheel of fortune game data
+
+var formData = {
+    'game_session_id': get_session_id()
+};
+
+$.ajax({
+    type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+    url         : '/adminroom/get_game_session_data/', // the url where we want to POST
+    data        : formData, // our data object
+    dataType    : 'json', // what type of data do we expect back from the server
+    encode          : true
+})
+// using the done promise callback
+.done(function(data) {
+    game_data = JSON.parse(data.result[0].data);
+    var Game = new WheelGame(game_data);
+});
+
+
+

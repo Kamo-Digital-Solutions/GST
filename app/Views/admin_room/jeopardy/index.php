@@ -64,7 +64,27 @@
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('add')">Add</button>
 					<button class="btn bg_dark_blue game_btn" onclick="set_score('sub')">Subtract</button>
     
-					<button class="btn btn-primary" onclick="send_score();">Send Msg</button>
+					<!-- <button class="btn btn-primary" onclick="send_score();">Send Msg</button> -->
+					
+					<div class="form-group">
+						<label for="scores" class="mt-4">Choose teams:</label>
+
+                        <div class="mb-4">
+                            <select name="teams-1" id="team-1">
+
+                            </select>
+
+                            <select name="teams-2" id="team-2">
+
+                            </select>
+
+                        </div>
+
+                        <button class="btn bg_dark_blue game_btn" onclick="playing_teams()">Change</button>
+
+					</div>
+
+
 					<!-- For OpenVidu -->
 					<div id="session">
 						<div id="video-container" class="col-md-6 width-all" style="max-width: 100%;"></div>
@@ -92,6 +112,14 @@
 								<button class="btn bg_dark_blue game_btn mb-3" onclick="countdown_question()">Start Buzzing</button>
 							</div>
 						</div>
+						<div style="display: flex; justify-content: center;">
+							<div>
+								<button class="btn bg_dark_blue game_btn mb-3" onclick="reset_game_data()">Reset Game data</button>
+								<button class="btn bg_dark_blue game_btn mb-3" onclick="double_jeopardy()">Double Jeopardy</button>
+								<button class="btn bg_dark_blue game_btn mb-3" onclick="final_jeopardy()">Final Jeopardy</button>
+							</div>
+						</div>
+
 						
 						<div id="main_game">
 							<div class="jeopardy">
@@ -117,11 +145,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-	<script src="<?php echo base_url('assets/js/html2canvas.min.js'); ?>"></script>	
 	<script src="<?php echo base_url("assets/js/openvidu-browser-2.15.0.js");?>"></script>
 	<script src="<?php echo base_url('assets/js/room-admin.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/js/game-view.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/js/admin-jeopardy-view.js'); ?>"></script>
-
+	<script src="<?php echo base_url('assets/js/Jeopardy/jeopardy-game-view.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/Jeopardy/jeopardy-admin-view.js'); ?>"></script>
 </body>
 </html>

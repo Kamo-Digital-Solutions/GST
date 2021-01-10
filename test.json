@@ -4,6 +4,8 @@
     "current_state" : "table | question | answer",
     "data_state": "the question, the answer",
     "game_dashboard" : ["Pop Cuture", "Jesus' Birth", "Christmas Carols", "History Tekks Us"],
+    "current_teams" : [0, 6],
+    "start_data" : 6
 }
 
 
@@ -12,6 +14,7 @@
 {
     "current_state" : "H**he*",
     "data_state": ,
+    "current_teams" : [0, 6]
 }
 
 

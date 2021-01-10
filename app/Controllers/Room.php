@@ -19,7 +19,7 @@ class Room extends Controller {
 			if($data[0]->game_id == 3) {
 				return view('room/fortune/index');
 			} else if ($data[0]->game_id == 1) {
-				return view('room/index');
+				return view('room/jeopardy/index');
 			} else if($data[0]->game_id == 4) {
 				return view('room/family_feud/index');
 			} else {

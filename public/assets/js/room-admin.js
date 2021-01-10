@@ -18,6 +18,9 @@ var dashboard_array = [];
 var current_state = "table";
 var data_state = "";
 var current_teams = [];
+var teams = [];
+var teams_ids = [];
+var start_data_j = 0;
 
 // Wheel of fortune variable:
 var spin_access;
@@ -52,6 +55,7 @@ $(function() {
 		console.log(nickName);
 		console.log("ID: "+data.id);
 		console.log("Logged IN: "+ data.logged_in);
+		get_teams();
 		joinSession();
 	});
 	setInterval(function(){ update_scores(); }, 3000);
@@ -139,7 +143,6 @@ function joinSession() {
 					initMainVideo(event.element, userData);
 					//appendUserData(event.element, userData);
 					//$(event.element).prop('muted', true); // Mute local video
-					update_game_users();
 				});
 
 				// --- 8) Publish your stream ---
@@ -209,7 +212,7 @@ function remove_spin_access() {
 
 // Update the game for the users
 function update_game_users() {
-
+	console.log("Called");
 	s_id = get_session_id();
 	
 	gd = {
@@ -217,6 +220,7 @@ function update_game_users() {
 		"data_state" : data_state,
 		"game_dashboard": dashboard_array,
 		"current_teams": current_teams,
+		"start_data_j" : start_data_j,
 	}
 
 	data = {
@@ -673,4 +677,74 @@ function countdown_question() {
 			open_floor_first_user();
 		}
 	}, 10);
+}
+
+///////////////// Managing Teams
+function init_teams() {
+
+	$("#team-1").empty();
+	$("#team-2").empty();
+
+	for(var i = 0; i<teams.length; i++) {
+		$("#team-1").append("<option value='"+ teams_ids[i] +"'>" + teams[i] + "</option>");
+		$("#team-2").append("<option value='"+ teams_ids[i] +"'>" + teams[i] + "</option>");
+	}
+
+	// Select the current teams
+
+	data = {
+		"game_session": get_session_id(),
+	}
+	// Get the username
+	$.ajax({
+		type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url: '/api-sessions/get_current_game_data/', // the url where we want to POST
+		data: data, // our data object
+		dataType: 'json', // what type of data do we expect back from the server
+		encode: true
+	})// using the done promise callback
+	.done(function (data) {
+		// Check if there is data in the DB (Saved Data)
+		if(JSON.parse(data.code).current_teams) {
+			current_teams = JSON.parse(data.code).current_teams;
+			$('#team-1 option[value="'+ current_teams[0] +'"]').prop('selected', true);
+			$('#team-2 option[value="'+ current_teams[1] +'"]').prop('selected', true);
+		}			
+	});
+
+}
+
+function playing_teams() {
+	t1 = document.getElementById("team-1").value;
+	t2 = document.getElementById("team-2").value;
+	current_teams = [t1, t2];
+
+	update_game_users(); // from room-admin.js
+	$("#team1_score").html(data_state[t1]);
+	$("#team2_score").html(data_state[t2]);
+}
+
+function get_teams() {
+
+	data = {
+		"game_session": get_session_id(),
+	}
+
+	// Get the username
+	$.ajax({
+		type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+		url         : '/api-sessions/get_teams_name/', // the url where we want to POST
+		data        : data, // our data object
+		dataType    : 'json', // what type of data do we expect back from the server
+		encode          : true
+	})// using the done promise callback
+	.done(function(data) {
+		teams = [];
+		teams_ids = [];
+		for(var i =0; i<data.data.length;i++) {
+			teams.push(data.data[i].team_name);
+			teams_ids.push(data.data[i].team_id);
+		}
+		init_teams();
+	});
 }

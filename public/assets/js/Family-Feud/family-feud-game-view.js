@@ -21,6 +21,15 @@ function update_game(data) {
     $("#team1_score").html(JSON.parse(data).data_state[current_teams[0]]);
     $("#team2_score").html(JSON.parse(data).data_state[current_teams[1]]);
 
+    // Check if he need to connect/disconnect
+
+    // Get team id
+    if ((team_id == current_teams[0] || team_id == current_teams[1]) && !published) {
+        republishing_session();
+    } else if ((team_id != current_teams[0] && team_id != current_teams[1]) && published) {
+        stop_publishing();
+    }
+
     $("#answers_dashboard_1").html("");
     $("#answers_dashboard_2").html("");
     

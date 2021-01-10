@@ -13,6 +13,11 @@ var role = "";
 var game_session = "";
 var timer;
 var team_id;
+var published;
+var videoContainer;
+var current_teams;
+var g_data;
+
 
 function get_session_id() {
 	var url = $(location).attr('href');
@@ -53,13 +58,11 @@ $(function () {
 			} else {
 				game_session = parts[parts.length - 1];
 			}
-			joinSession();
 			get_game_data();
 		});
 	setInterval(function () { update_scores(); }, 3000);
 
 });
-
 
 function get_game_data() {
 	s_id = get_session_id();
@@ -76,8 +79,11 @@ function get_game_data() {
 		encode: true
 	})// using the done promise callback
 		.done(function (data) {
-			if(data.code)
-				update_game(data.code);
+			if(data.code) {
+				current_teams = JSON.parse(data.code).current_teams;
+				g_data = data.code;
+			}
+			joinSession();
 		});
 }
 
@@ -101,7 +107,7 @@ function joinSession() {
 
 			// Subscribe to the Stream to receive it
 			// HTML video will be appended to element with 'video-container' id
-			if(JSON.parse(event.stream.connection.data.split('%/%')[0]).team_id == 1) {
+			if(JSON.parse(event.stream.connection.data.split('%/%')[0]).team_id == current_teams[0]) {
 				var subscriber = session.subscribe(event.stream, 'video-container');
 			} else {
 				var subscriber = session.subscribe(event.stream, 'video-container2');
@@ -138,45 +144,55 @@ function joinSession() {
 
 				// --- 6) Get your own camera stream ---
 
-				var videoContainer = "video-container";
-				if(team_id == 2)
+				videoContainer = "video-container";
+				if(team_id == current_teams[1])
 					videoContainer = "video-container2";
 
-				publisher = OV.initPublisher(videoContainer, {
-					audioSource: undefined, // The source of audio. If undefined default microphone
-					videoSource: undefined, // The source of video. If undefined default webcam
-					publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-					publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-					resolution: '640x480',  // The resolution of your video
-					frameRate: 30,			// The frame rate of your video
-					insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-					mirror: false       	// Whether to mirror your local video or not
-				});
+				if(team_id == current_teams[0] || team_id == current_teams[1]) {
+	
+					publisher = OV.initPublisher(videoContainer, {
+						audioSource: undefined, // The source of audio. If undefined default microphone
+						videoSource: undefined, // The source of video. If undefined default webcam
+						publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+						publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+						resolution: '640x480',  // The resolution of your video
+						frameRate: 30,			// The frame rate of your video
+						insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+						mirror: false       	// Whether to mirror your local video or not
+					});
 
-				// --- 7) Specify the actions when events take place in our publisher ---
-				// When our HTML video has been added to DOM...
-				publisher.on('videoElementCreated', (event) => {
-					// Init the main video with ours and append our data
-					var userData = {
-						nickName: nickName,
-						score: score,
-						u_id: userid,
-						role: "participant",
-						team_id: team_id
-					};
-					//initMainVideo(event.element, userData);
-					appendUserData(event.element, userData);
-					//$(event.element).prop('muted', true); // Mute local video
-				});
+					// --- 7) Specify the actions when events take place in our publisher ---
+					// When our HTML video has been added to DOM...
+					publisher.on('videoElementCreated', (event) => {
+						// Init the main video with ours and append our data
+						var userData = {
+							nickName: nickName,
+							score: score,
+							u_id: userid,
+							role: "participant",
+							team_id: team_id
+						};
+						//initMainVideo(event.element, userData);
+						appendUserData(event.element, userData);
+						//$(event.element).prop('muted', true); // Mute local video
+					});
 
-				// --- 8) Publish your stream ---
+					// --- 8) Publish your stream ---
+					published = true;
+					session.publish(publisher);	
+				} else {
 
-				session.publish(publisher);
+					// Lock Buzzer
+					lock_buzzer();
+				}
+				update_game(g_data);
+
 			})
 			.catch(error => {
 				console.warn('There was an error connecting to the session:', error.code, error.message);
 			});
 
+		// Check signal and assign function for each of them
 		session.on('signal', (event) => {
 			if (event.type == "signal:update-score") {
 				update_scores();
@@ -208,6 +224,14 @@ function joinSession() {
 	});
 
 	return false;
+}
+
+function stop_publishing() {
+	location.reload();
+}
+
+function republishing_session() {
+	location.reload(); 
 }
 
 function start_countdown() {
@@ -271,8 +295,6 @@ function update_state() {
 	});
 
 }
-
-
 
 function getToken(callback) {
 	var url = $(location).attr('href');
