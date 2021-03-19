@@ -124,6 +124,16 @@ class GameModel extends Model
 		$builder->update();
 		
 		return true;
+	}
 
+	public function get_games() {
+		$builder = $this->db->table('game_data');
+		$builder->join('users', 'users.id = game_data.owner_id');
+		$builder->join('game_sessions', 'game_sessions.id = game_data.game_session_id');
+		$builder->join('games', 'games.id = game_sessions.game_id');
+
+		$builder->select('game_data.id as id, users.firstname as firstname, users.lastname as lastname, game_data.game_session_id as game_session_id, games.name as gametype');
+
+		return $builder->get()->getResult();
 	}
 }

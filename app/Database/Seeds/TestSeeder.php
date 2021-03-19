@@ -371,5 +371,36 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 		// Using Query Builder
 		$this->db->table("game_data")->insert($data);
 
+
+		////////////////////////////////////////////////////////
+		// Questions Model
+		////////////////////////////////////////////////////////
+		$data = [
+			'question_text' => 'Name the three gifts given by the Wise Men and the Bible reference.',
+			'media_attachement' => '',
+			'answer' => 'Gold, Frankincense, and Myrrh<br/>(Ref: Matthew 2:11)',
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'This reindeer shares a name with a famous symbol of Valentine’s Day.',
+			'media_attachement' => '',
+			'answer' => 'Cupid',
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'Animated 2004 film about a train that carries kids to the North Pole on Christmas Eve.',
+			'media_attachement' => '',
+			'answer' => 'Polar Express',
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
 	}
 }

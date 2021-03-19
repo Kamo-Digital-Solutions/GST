@@ -58,7 +58,19 @@ $routes->get('/admin/teams/(:num)', 'AdminRoom::teams/$1');
 $routes->get('/adminroom/ishost/', 'AdminRoom::isHost');
 $routes->post('/adminroom/get_game_session_data/', 'AdminRoom::get_game_session_data');
 
+$routes->get('/admin/dashboard/', 'AdminDashboard::index/$1');
 
+$routes->get('/admin/dashboard/games', 'AdminDashboard::games');
+$routes->get('/admin/dashboard/questions', 'AdminDashboard::questions');
+$routes->get('/admin/dashboard/add_question', 'AdminDashboard::add_question');
+
+$routes->get('/admin/dashboard/add_question', 'AdminDashboard::add_question');
+$routes->get('/admin/dashboard/update_question/(:num)', 'AdminDashboard::update_question/$1');
+
+$routes->post('/admin/dashboard/questions/update/', 'AdminDashboard::update_question_form');
+$routes->get('/admin/dashboard/questions/delete/(:num)', 'AdminDashboard::delete_question/$1');
+
+$routes->post('/admin/dashboard/add_question', 'AdminDashboard::add_question_form');
 
 /**
  * --------------------------------------------------------------------
