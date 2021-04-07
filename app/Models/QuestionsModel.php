@@ -54,6 +54,56 @@ class QuestionsModel extends Model
 		return true;
 	}
 
+	public function get_category_questions($id) {
+		$builder = $this->db->table('questions');
+		$builder->where('category_id', $id);
+
+		return $builder->get()->getResult();
+	}
+
+	public function add_category($data) {
+		$builder = $this->db->table('jeopardy_category');
+
+		$builder->insert($data);
+		
+		return true;
+	}
+
+	public function delete_category($id) {
+		$builder = $this->db->table('jeopardy_category');
+
+		$builder->where('id', $id);
+		$builder->delete();
+
+		return true;
+
+	}
+
+	public function update_category($id, $data) {
+		$builder = $this->db->table('jeopardy_category');
+
+		$builder->where('id', $id);
+	
+		$builder->update($data);
+
+		return true;
+	}
+
+	public function get_category($id) {
+		$builder = $this->db->table('jeopardy_category');
+		$builder->where('id', $id);
+
+		return $builder->get()->getResult();
+
+	}
+
+
+	public function add_jeopardy($data) {
+		$builder = $this->db->table('jeopardy_game');
+		$builder->insert($data);
+		
+		return true;
+	}
 
 	// Linking questions with games
 

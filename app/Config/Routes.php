@@ -59,12 +59,33 @@ $routes->get('/adminroom/ishost/', 'AdminRoom::isHost');
 $routes->post('/adminroom/get_game_session_data/', 'AdminRoom::get_game_session_data');
 
 $routes->get('/admin/dashboard/', 'AdminDashboard::index/$1');
-
 $routes->get('/admin/dashboard/games', 'AdminDashboard::games');
 $routes->get('/admin/dashboard/questions', 'AdminDashboard::questions');
 $routes->get('/admin/dashboard/add_question', 'AdminDashboard::add_question');
 
 $routes->get('/admin/dashboard/add_question', 'AdminDashboard::add_question');
+
+// Jeopardy
+$routes->get('/admin/dashboard/add_jeopardy', 'AdminDashboard::add_jeopardy');
+$routes->post('/admin/dashboard/add_jeopardy_form', 'AdminDashboard::add_jeopardy_form');
+$routes->get('/admin/dashboard/get_category_questions/(:num)', 'AdminDashboard::get_category_questions/$1');
+
+//// Categories
+$routes->get('/admin/dashboard/add_category', 'AdminDashboard::add_category');
+$routes->post('/admin/dashboard/add_category_form', 'AdminDashboard::add_category_form');
+
+$routes->get('/admin/dashboard/delete_category/(:num)', 'AdminDashboard::delete_category/$1');
+
+$routes->get('/admin/dashboard/update_category/(:num)', 'AdminDashboard::update_category/$1');
+$routes->post('/admin/dashboard/update_category_form', 'AdminDashboard::update_category_form');
+$routes->get('/admin/dashboard/test', 'AdminDashboard::test');
+
+$routes->get('/admin/dashboard/categories', 'AdminDashboard::categories');
+$routes->get('/admin/dashboard/category/(:num)', 'AdminDashboard::update_category/$1');
+
+
+// End of Jeopardy
+
 $routes->get('/admin/dashboard/update_question/(:num)', 'AdminDashboard::update_question/$1');
 
 $routes->post('/admin/dashboard/questions/update/', 'AdminDashboard::update_question_form');

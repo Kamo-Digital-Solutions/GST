@@ -16,15 +16,25 @@ class Questions extends Migration
 			'question_text' => [
 				'type' => 'VARCHAR',
 				'constraint' => 512,
+				'null' => true,
 			],
 			'media_attachement' => [
 				'type' => 'VARCHAR',
 				'constraint' => 1024,
+				'null' => true,
 			],
 			'answer' => [
 				'type' => 'VARCHAR',
 				'constraint' => 512,
+				'null' => true,
 			],
+
+			'category_id' => [
+				'type' => 'INT',
+				'constraint' => 11,
+				'null' => true,
+			],
+
 			'created_at' => [
 				'type' => 'DATETIME',
 				'null' => true,

@@ -41,6 +41,14 @@
                                 <label for="questionAnswer">Answer</label>
                                 <input type="text" class="form-control" name="questionAnswer" id="questionAnswer" placeholder="Answer." value="<?php echo $question[0]->answer ?>">
                             </div>
+                            <div class="form-group">
+                                    <label for="questionText">Category</label>
+                                    <select class="form-control" id="categoryId" name="categoryId">
+                                        <?php foreach($categories as $cat) { ?>
+                                            <option value="<?php echo $cat->id ?>" <?php if($cat->id == $question[0]->category_id) { echo "selected" ;} ?>><?php echo $cat->name ?></option>
+                                        <?php } ?>
+                                    </select>      
+                            </div>
 
                             <div class="form-group">
                                 <label for="mediaInputFile">Media attachement</label>

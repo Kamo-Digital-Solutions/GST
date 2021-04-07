@@ -375,19 +375,14 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 		////////////////////////////////////////////////////////
 		// Questions Model
 		////////////////////////////////////////////////////////
-		$data = [
-			'question_text' => 'Name the three gifts given by the Wise Men and the Bible reference.',
-			'media_attachement' => '',
-			'answer' => 'Gold, Frankincense, and Myrrh<br/>(Ref: Matthew 2:11)',
-			'created_at' => date('Y-m-d H:i:s', time()),
-		];
-		// Using Query Builder
-		$this->db->table("questions")->insert($data);
 
+
+		// Category 1
 		$data = [
 			'question_text' => 'This reindeer shares a name with a famous symbol of Valentine’s Day.',
 			'media_attachement' => '',
 			'answer' => 'Cupid',
+			'category_id' => 1,
 			'created_at' => date('Y-m-d H:i:s', time()),
 		];
 		// Using Query Builder
@@ -397,10 +392,349 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 			'question_text' => 'Animated 2004 film about a train that carries kids to the North Pole on Christmas Eve.',
 			'media_attachement' => '',
 			'answer' => 'Polar Express',
+			'category_id' => 1,
 			'created_at' => date('Y-m-d H:i:s', time()),
 		];
 		// Using Query Builder
 		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'Holiday celebrated in Canada, the U.K., and several other British Commonwealth countries on the day after Christmas.',
+			'media_attachement' => '',
+			'answer' => 'Boxing Day',
+			'category_id' => 1,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'Governor of California, Arnold Schwarzenegger, plays a father who tries to buy a toy for his son in this movie.',
+			'media_attachement' => '',
+			'answer' => 'Jingle All the Way',
+			'category_id' => 1,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'Actor who plays the thief, Harry Lime, in Home Alone 1 and Home Alone 2.',
+			'media_attachement' => '',
+			'answer' => 'Joe Pesci',
+			'category_id' => 1,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		// Category 2
+		$data = [
+			'question_text' => 'These two Gospels do <strong>NOT</strong> account the birth of Jesus.',
+			'media_attachement' => '',
+			'answer' => 'Mark and John',
+			'category_id' => 2,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => "How did the shepherds learn of Christ's birth?<br><ul><li>A new star in the sky</li><li>The magi told them</li><li>An angel appeared to them</li><li>Shepherds don’t exist</li></ul>",
+			'media_attachement' => '',
+			'answer' => 'An angel appeared to them<br/>(Ref: Luke 2:8-9)',
+			'category_id' => 2,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'Where was Jesus when the magi came to visit Him?',
+			'media_attachement' => '',
+			'answer' => 'In a house<br/>(Ref: Matthew 2:11)',
+			'category_id' => 2,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'In a dream, an angel tells Joseph to name his child Jesus, for it was prophesied that a virgin would give birth and call her son Immanuel. What does Immanuel mean?',
+			'media_attachement' => '',
+			'answer' => 'God With Us',
+			'category_id' => 2,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'The magi ask Herod where Christ is to be born. Herod summons his priests and scribes, who know the location of the birth because of the prophecy of this man.',
+			'media_attachement' => '',
+			'answer' => 'Micah<br/>(Ref: Micah 5:2 & Matthew 2:6)',
+			'category_id' => 2,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		// Category 3
+
+		$data = [
+			'question_text' => 'The first seven words to Jingle Bell Rock.',
+			'media_attachement' => '',
+			'answer' => 'Jingle Bell, Jingle Bell, Jingle Bell Rock',
+			'category_id' => 3,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+
+		$data = [
+			'question_text' => 'This Christmas hymn’s second verse begins with “O sing, choirs of angels\"',
+			'media_attachement' => '',
+			'answer' => 'O Come All Ye Faithful',
+			'category_id' => 3,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+
+		$data = [
+			'question_text' => 'This Christmas song’s second verse begins with \"The cattle are lowing\"',
+			'media_attachement' => '',
+			'answer' => 'Away in a Manger',
+			'category_id' => 3,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+
+		$data = [
+			'question_text' => 'On the tenth day, my true love gave to me.',
+			'media_attachement' => '',
+			'answer' => '10 Lords-a-Leaping',
+			'category_id' => 3,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'This Christmas carol was composed by Franz Xaver Gruber to lyrics by Joseph Mohr in 1818.',
+			'media_attachement' => '',
+			'answer' => 'Silent Night',
+			'category_id' => 3,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+
+		// Category 4
+
+		$data = [
+			'question_text' => 'This many Christmas turkeys were sold in 2013 across the U.K.<br><ul><li>1 million</li><li>10 million</li><li>20 million</li></ul>',
+			'media_attachement' => '',
+			'answer' => '10 million',
+			'category_id' => 4,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'This Christmas decoration was originally made from strands of silver.',
+			'media_attachement' => '',
+			'answer' => 'Tinsel',
+			'category_id' => 4,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'This traditional Christmas decoration is actually a parasitic plant.',
+			'media_attachement' => '',
+			'answer' => 'Mistletoe',
+			'category_id' => 4,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'This Christmas carol became the first song ever broadcast from space in 1965.',
+			'media_attachement' => '',
+			'answer' => 'Jingle Bells',
+			'category_id' => 4,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+
+		$data = [
+			'question_text' => 'Stollen is the traditional fruit cake of this country.',
+			'media_attachement' => '',
+			'answer' => 'Germany',
+			'category_id' => 4,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+
+		// Category 5
+		$data = [
+			'question_text' => "This person had a solo for the BASIC Fellowship's Christmas Choir.",
+			'media_attachement' => '',
+			'answer' => 'Brian Tung',
+			'category_id' => 5,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'Our church is participating in this special offering this month.',
+			'media_attachement' => '',
+			'answer' => 'Lottie Moon Christmas Offering',
+			'category_id' => 5,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'The BASIC Fellowship sang this song last Sunday.',
+			'media_attachement' => '',
+			'answer' => 'Joyful, Joyful, We Adore Thee',
+			'category_id' => 5,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => 'In “O little town of Bethlehem” where do the silent stars go by?',
+			'media_attachement' => '',
+			'answer' => 'Above the deep and dreamless sleep',
+			'category_id' => 5,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		$data = [
+			'question_text' => "What passage was Pastor Steve's sermon based on?",
+			'media_attachement' => '',
+			'answer' => 'Matthew 1:18-25',
+			'category_id' => 5,
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("questions")->insert($data);
+
+		////////////////////////////////////////////////////////
+		// Jeopardy Category Model
+		////////////////////////////////////////////////////////
+
+		$data = [
+			'name' => 'Pop culture',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => "Jesus' Birth",
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => 'Christmas Carols',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => 'History tells us...',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => 'I know what you did last Sunday!',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => 'Pop culture2',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => "Jesus' Birth2",
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => 'Christmas Carols2',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => 'History tells us 2...',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+		$data = [
+			'name' => 'I know what you did last Sunday! 2',
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_category")->insert($data);
+
+
+		////////////////////////////////////////////////////////
+		// Jeopardy Game Model
+		////////////////////////////////////////////////////////
+
+		$data = [
+			'scores_r1' => '[100,200,300,400,500]',
+			'categoryid_1' => 1,
+			'categoryid_2' => 2,
+			'categoryid_3' => 3,
+			'categoryid_4' => 4,
+			'categoryid_5' => 5,
+
+			'scores_r2' => '[100,200,300,400,500]',
+			'categoryid_6' => 6,
+			'categoryid_7' => 7,
+			'categoryid_8' => 8,
+			'categoryid_9' => 9,
+			'categoryid_10' => 10,
+
+			'final_jeopardy_question' => 'Name the three gifts given by the Wise Men and the Bible reference.',
+			'final_jeopardy_answer' => 'Gold, Frankincense, and Myrrh<br/>(Ref: Matthew 2:11)',
+			'final_jeopardy_score' => '9000',
+
+			'double_jeopardy_r1' => '11',
+			'double_jeopardy_r2' => '22',
+
+			'created_at' => date('Y-m-d H:i:s', time()),
+		];
+		// Using Query Builder
+		$this->db->table("jeopardy_game")->insert($data);
 
 	}
 }

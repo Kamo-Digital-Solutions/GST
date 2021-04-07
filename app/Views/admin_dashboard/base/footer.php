@@ -1,10 +1,7 @@
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    <strong>Copyright &copy; 2021 <a href="https://gameshowtime.com">Game Show Time</a>.</strong>
     All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0-rc
-    </div>
   </footer>
 
   <!-- Control Sidebar -->
@@ -59,6 +56,8 @@
 <script src="<?php echo base_url("assets/plugins/datatables-buttons/js/buttons.html5.min.js");?>"></script>
 <script src="<?php echo base_url("assets/plugins/datatables-buttons/js/buttons.print.min.js");?>"></script>
 <script src="<?php echo base_url("assets/plugins/datatables-buttons/js/buttons.colVis.min.js");?>"></script>
+<script src="<?php echo base_url("assets/js/admin-dashboard.js");?>"></script>
+
 <script>
   $(function () {
     $('#games_table').DataTable({

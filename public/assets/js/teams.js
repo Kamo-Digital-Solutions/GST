@@ -73,6 +73,7 @@ function change_team(nbr) {
 
 }
 
+// To add teams to teams and teams_ids arrays
 function get_teams() {
 
 	data = {

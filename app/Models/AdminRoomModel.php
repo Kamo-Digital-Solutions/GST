@@ -44,4 +44,11 @@ class AdminRoomModel extends Model
 		
 		return true;
 	}
+
+	public function get_jeopardy_categories() {
+		$builder = $this->db->table('jeopardy_category');
+
+		return $builder->get()->getResult();
+	}
+
 }
