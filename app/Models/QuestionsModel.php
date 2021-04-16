@@ -36,6 +36,7 @@ class QuestionsModel extends Model
 		return $builder->get()->getResult();
 	}
 
+
 	public function update_question($id, $data) {
 		$builder = $this->db->table('questions');
 		$builder->where('id', $id);
@@ -97,6 +98,7 @@ class QuestionsModel extends Model
 
 	}
 
+	//// Jeopardy functions
 
 	public function add_jeopardy($data) {
 		$builder = $this->db->table('jeopardy_game');
@@ -104,6 +106,24 @@ class QuestionsModel extends Model
 		
 		return true;
 	}
+
+	public function update_jeopardy($id, $data) {
+		$builder = $this->db->table('jeopardy_game');
+		$builder->where('id', $id);
+	
+		$builder->update($data);
+
+		return true;
+	}
+
+	public function get_jeopardy($id) {
+		$builder = $this->db->table('jeopardy_game');
+		$builder->where('id', $id);
+
+		return $builder->get()->getResult();
+	}
+
+	//// End of Jeopardy function
 
 	// Linking questions with games
 

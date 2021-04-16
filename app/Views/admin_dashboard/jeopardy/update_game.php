@@ -38,16 +38,16 @@
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect2">Score 1</label>
                                     <select class="form-control" id="exampleFormControlSelect2" name="score1">
-                                        <option value="100">100</option>
-                                        <option value="200">200</option>
-                                        <option value="300">300</option>
-                                        <option value="400">400</option>
-                                        <option value="500">500</option>
-                                        <option value="600">600</option>
-                                        <option value="700">700</option>
-                                        <option value="800">800</option>
-                                        <option value="900">900</option>
-                                        <option value="1000">1000</option>
+                                        <option value="100" <?php if($score1 == 100) { echo "selected"; } ?>>100</option>
+                                        <option value="200" <?php if($score1 == 200) { echo "selected"; } ?>>200</option>
+                                        <option value="300" <?php if($score1 == 300) { echo "selected"; } ?>>300</option>
+                                        <option value="400" <?php if($score1 == 400) { echo "selected"; } ?>>400</option>
+                                        <option value="500" <?php if($score1 == 500) { echo "selected"; } ?>>500</option>
+                                        <option value="600" <?php if($score1 == 600) { echo "selected"; } ?>>600</option>
+                                        <option value="700" <?php if($score1 == 700) { echo "selected"; } ?>>700</option>
+                                        <option value="800" <?php if($score1 == 800) { echo "selected"; } ?>>800</option>
+                                        <option value="900" <?php if($score1 == 900) { echo "selected"; } ?>>900</option>
+                                        <option value="1000" <?php if($score1 == 1000) { echo "selected"; } ?>>1000</option>
                                     </select>      
                                 </div>
                             </div>
@@ -80,16 +80,16 @@
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect2">Score 2</label>
                                     <select class="form-control" id="exampleFormControlSelect2" name="score2">
-                                        <option value="100">100</option>
-                                        <option value="200">200</option>
-                                        <option value="300">300</option>
-                                        <option value="400">400</option>
-                                        <option value="500">500</option>
-                                        <option value="600">600</option>
-                                        <option value="700">700</option>
-                                        <option value="800">800</option>
-                                        <option value="900">900</option>
-                                        <option value="1000">1000</option>
+                                        <option value="100" <?php if($score2 == 100) { echo "selected"; } ?>>100</option>
+                                        <option value="200" <?php if($score2 == 200) { echo "selected"; } ?>>200</option>
+                                        <option value="300" <?php if($score2 == 300) { echo "selected"; } ?>>300</option>
+                                        <option value="400" <?php if($score2 == 400) { echo "selected"; } ?>>400</option>
+                                        <option value="500" <?php if($score2 == 500) { echo "selected"; } ?>>500</option>
+                                        <option value="600" <?php if($score2 == 600) { echo "selected"; } ?>>600</option>
+                                        <option value="700" <?php if($score2 == 700) { echo "selected"; } ?>>700</option>
+                                        <option value="800" <?php if($score2 == 800) { echo "selected"; } ?>>800</option>
+                                        <option value="900" <?php if($score2 == 900) { echo "selected"; } ?>>900</option>
+                                        <option value="1000" <?php if($score2 == 1000) { echo "selected"; } ?>>1000</option>
                                     </select>      
                                 </div>
                             </div>
@@ -246,26 +246,26 @@
                             <h4> - Final Jeopardy - </h4>
                             <div class="form-group">
                                 <label for="questionText">Final Jeopardy Question</label>
-                                <input type="text" class="form-control" name="questionText" id="questionText" placeholder="Question text?">
+                                <input type="text" class="form-control" name="questionText" id="questionText" placeholder="Question text?" value="<?php echo $jeopardy_game->final_jeopardy_question ?>">
                             </div>
                             <div class="form-group">
                                 <label for="questionAnswer">Final Jeopardy Answer</label>
-                                <input type="text" class="form-control" name="questionAnswer" id="questionAnswer" placeholder="Answer.">
+                                <input type="text" class="form-control" name="questionAnswer" id="questionAnswer" placeholder="Answer." value="<?php echo $jeopardy_game->final_jeopardy_answer ?>">
                             </div>
 
                             <div class="form-group">
                                     <label for="exampleFormControlSelect2">Final Jeopardy Score</label>
                                     <select class="form-control" id="exampleFormControlSelect2" name="final_jeopardy_score">
-                                        <option value="100">100</option>
-                                        <option value="200">200</option>
-                                        <option value="300">300</option>
-                                        <option value="400">400</option>
-                                        <option value="500">500</option>
-                                        <option value="600">600</option>
-                                        <option value="700">700</option>
-                                        <option value="800">800</option>
-                                        <option value="900">900</option>
-                                        <option value="1000">1000</option>
+                                        <option value="100" <?php if($jeopardy_game->final_jeopardy_score == "100") {echo "selected"; } ?> >100</option>
+                                        <option value="200" <?php if($jeopardy_game->final_jeopardy_score == "200") {echo "selected"; } ?>>200</option>
+                                        <option value="300" <?php if($jeopardy_game->final_jeopardy_score == "300") {echo "selected"; } ?>>300</option>
+                                        <option value="400" <?php if($jeopardy_game->final_jeopardy_score == "400") {echo "selected"; } ?>>400</option>
+                                        <option value="500" <?php if($jeopardy_game->final_jeopardy_score == "500") {echo "selected"; } ?>>500</option>
+                                        <option value="600" <?php if($jeopardy_game->final_jeopardy_score == "600") {echo "selected"; } ?>>600</option>
+                                        <option value="700" <?php if($jeopardy_game->final_jeopardy_score == "700") {echo "selected"; } ?>>700</option>
+                                        <option value="800" <?php if($jeopardy_game->final_jeopardy_score == "800") {echo "selected"; } ?>>800</option>
+                                        <option value="900" <?php if($jeopardy_game->final_jeopardy_score == "900") {echo "selected"; } ?>>900</option>
+                                        <option value="1000" <?php if($jeopardy_game->final_jeopardy_score == "1000") {echo "selected"; } ?>>1000</option>
                                     </select>      
                                 </div>
 

@@ -67,6 +67,8 @@ $routes->get('/admin/dashboard/add_question', 'AdminDashboard::add_question');
 
 // Jeopardy
 $routes->get('/admin/dashboard/add_jeopardy', 'AdminDashboard::add_jeopardy');
+$routes->get('/admin/dashboard/update_jeopard/(:num)', 'AdminDashboard::update_jeopardy/$1');
+
 $routes->post('/admin/dashboard/add_jeopardy_form', 'AdminDashboard::add_jeopardy_form');
 $routes->get('/admin/dashboard/get_category_questions/(:num)', 'AdminDashboard::get_category_questions/$1');
 

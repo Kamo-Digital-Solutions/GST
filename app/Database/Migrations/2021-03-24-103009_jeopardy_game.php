@@ -90,7 +90,16 @@ class JeopardyGame extends Migration
 				'constraint' => 512,
 				'null' => true,
 			],
-
+			'final_jeopardy_category' => [
+				'type' => 'VARCHAR',
+				'constraint' => 512,
+				'null' => true,
+			],
+			'final_jeopardy_media_attachement' => [
+				'type' => 'VARCHAR',
+				'constraint' => 512,
+				'null' => true,
+			],
 			'double_jeopardy_r1' => [
 				'type' => 'VARCHAR',
 				'constraint' => 512,
@@ -101,8 +110,6 @@ class JeopardyGame extends Migration
 				'constraint' => 512,
 				'null' => true,
 			],
-
-
 			'created_at' => [
 				'type' => 'DATETIME',
 				'null' => true,

@@ -172,6 +172,8 @@ class AdminDashboard extends Controller {
 		return redirect()->to('/admin/dashboard/questions');
 	}
 
+	//// Jeopardy functions
+
 	public function add_jeopardy() {
 		if($this->isAdmin()) {
 			$session = session();
@@ -189,17 +191,77 @@ class AdminDashboard extends Controller {
 		}
 	}
 
-	public function update_jeopardy() {
+	public function add_jeopardy_form() {
+		// TODO: Missing Media attachement!
+		$request = \Config\Services::request();
+
+		$questionsModel = new QuestionsModel();
+		
+		$file = $this->request->getFile('mediaInputFile');
+
+		$scores = "[".$request->getPost("score1").",".$request->getPost("score2").",".$request->getPost("score3").",".$request->getPost("score4").",".$request->getPost("score5")."]";
+
+		if($file->isValid()) {
+			$newName = $file->getRandomName();
+			$file->move(WRITEPATH.'uploads', $newName);
+		} else {
+			$newName = NULL;
+		}
+
+
+		$data = [
+			"scores_r1" => $scores,
+			"scores_r2" => $scores,
+			"categoryid_1" => $request->getPost("category1_1"),
+			"categoryid_2" => $request->getPost("category1_2"),
+			"categoryid_3" => $request->getPost("category1_3"),
+			"categoryid_4" => $request->getPost("category1_4"),
+			"categoryid_5" => $request->getPost("category1_5"),
+
+			"categoryid_6" => $request->getPost("category2_1"),
+			"categoryid_7" => $request->getPost("category2_2"),
+			"categoryid_8" => $request->getPost("category2_3"),
+			"categoryid_9" => $request->getPost("category2_4"),
+			"categoryid_10" => $request->getPost("category2_5"),
+
+			"final_jeopardy_question" => $request->getPost("questionText"),
+			"final_jeopardy_answer" => $request->getPost("questionAnswer"),
+			"final_jeopardy_category" => $request->getPost("questionCategory"),
+			"final_jeopardy_score" => $request->getPost("final_jeopardy_score"),
+			"final_jeopardy_media_attachement" => $newName,
+			"double_jeopardy_r1" => "(".$request->getPost("category_double_r1").",".$request->getPost("category_question_double_r1").")",
+			"double_jeopardy_r2" => "(".$request->getPost("category_double_r2").",".$request->getPost("category_question_double_r2").")",
+			"created_at" => date('Y-m-d H:i:s', time()),
+		];
+
+		$questionsModel->add_jeopardy($data);
+		
+		return redirect()->to('/admin/dashboard/games');
+
+	}
+
+	public function update_jeopardy($id) {
 		if($this->isAdmin()) {
 			$session = session();
+
+			$questionsModel = new QuestionsModel();
 			$adminRoomModel = new AdminRoomModel();
 
+			$jeopardy_game = ($questionsModel->get_jeopardy($id))[0];
+			$scores = json_decode('[' . $jeopardy_game->scores_r1 . ']', true);
+
 			$data = [
+				"jeopardy_game" => $jeopardy_game,
+				"score1" => $scores[0][0],
+				"score2" => $scores[0][1],
+				"score3" => $scores[0][2],
+				"score4" => $scores[0][3],
+				"score5" => $scores[0][4],
 				"categories" => $adminRoomModel->get_jeopardy_categories()
 			];
 
 			echo view('admin_dashboard/base/header');
-			echo view('admin_dashboard/jeopardy/add_game', $data);
+			echo view('admin_dashboard/jeopardy/update_game', $data);
 			echo view('admin_dashboard/base/footer');
 		} else {
 			return redirect()->to('/');
@@ -222,6 +284,9 @@ class AdminDashboard extends Controller {
 			return redirect()->to('/');
 		}
 	}
+
+	//// End of Jeopardy functions
+
 
 	// Categories
 
@@ -339,48 +404,4 @@ class AdminDashboard extends Controller {
 
 	// End of Categories
 
-
-	public function add_jeopardy_form() {
-		// TODO: Missing Media attachement!
-		$request = \Config\Services::request();
-
-		$questionsModel = new QuestionsModel();
-				
-		$scores = "[".$request->getPost("score1").",".$request->getPost("score2").",".$request->getPost("score3").",".$request->getPost("score4").",".$request->getPost("score5")."]";
-
-		$data = [
-			"scores_r1" => $scores,
-			"scores_r2" => $scores,
-			"categoryid_1" => $request->getPost("category1_1"),
-			"categoryid_2" => $request->getPost("category1_2"),
-			"categoryid_3" => $request->getPost("category1_3"),
-			"categoryid_4" => $request->getPost("category1_4"),
-			"categoryid_5" => $request->getPost("category1_5"),
-
-			"categoryid_6" => $request->getPost("category2_1"),
-			"categoryid_7" => $request->getPost("category2_2"),
-			"categoryid_8" => $request->getPost("category2_3"),
-			"categoryid_9" => $request->getPost("category2_4"),
-			"categoryid_10" => $request->getPost("category2_5"),
-
-			"final_jeopardy_question" => $request->getPost("questionText"),
-			"final_jeopardy_answer" => $request->getPost("questionAnswer"),
-			"final_jeopardy_score" => $request->getPost("final_jeopardy_score"),
-			"double_jeopardy_r1" => "(".$request->getPost("category_double_r1").",".$request->getPost("category_question_double_r1").")",
-			"double_jeopardy_r2" => "(".$request->getPost("category_double_r2").",".$request->getPost("category_question_double_r2").")",
-		];
-
-		$questionsModel->add_jeopardy($data);
-		
-		return redirect()->to('/admin/dashboard/games');
-
-	}
-
-	public function edit_jeopardy() {
-
-	}
-
-	public function delete_jeopardy() {
-
-	}
 }

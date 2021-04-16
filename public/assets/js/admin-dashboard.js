@@ -53,3 +53,8 @@ function get_category(id) {
         $("#category_double_r" + id).append(new Option(txt, val));
     }
 }
+
+
+function init_update_jeopardy_game() {
+    
+}

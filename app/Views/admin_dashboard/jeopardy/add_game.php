@@ -252,6 +252,10 @@
                                 <label for="questionAnswer">Final Jeopardy Answer</label>
                                 <input type="text" class="form-control" name="questionAnswer" id="questionAnswer" placeholder="Answer.">
                             </div>
+                            <div class="form-group">
+                                <label for="questionCategory">Final Jeopardy Category</label>
+                                <input type="text" class="form-control" name="questionCategory" id="questionCategory" placeholder="category">
+                            </div>
 
                             <div class="form-group">
                                     <label for="exampleFormControlSelect2">Final Jeopardy Score</label>

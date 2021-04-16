@@ -727,6 +727,7 @@ class TestSeeder extends \CodeIgniter\Database\Seeder {
 			'final_jeopardy_question' => 'Name the three gifts given by the Wise Men and the Bible reference.',
 			'final_jeopardy_answer' => 'Gold, Frankincense, and Myrrh<br/>(Ref: Matthew 2:11)',
 			'final_jeopardy_score' => '9000',
+			'final_jeopardy_category' => 'gift',
 
 			'double_jeopardy_r1' => '11',
 			'double_jeopardy_r2' => '22',
